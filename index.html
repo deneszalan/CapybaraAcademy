@@ -1,0 +1,2311 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kapybaří akademie dějepisu 🦫📜</title>
+    <meta name="description" content="Dějepis pro 6. třídu krok za krokem: historické prameny, čas a období dějin, vznik člověka. Česky i anglicky.">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --bg: #fdf6ec;
+            --surface: #fff8ef;
+            --surface2: #f0e0c8;
+            --paper: #ffffff;
+            --accent: #8b5e3c;
+            --accent2: #c68642;
+            --green: #6a9f4d;
+            --orange: #e8943a;
+            --red: #d45b5b;
+            --blue: #5da8c4;
+            --purple: #9b7cb9;
+            --text: #4a3728;
+            --muted: #9c8672;
+            --water: #7ec8d9;
+            --water-light: #d4f0f6;
+            /* source types / periods */
+            --c-w: #4f97b3;   /* written  – ink blue   */
+            --c-m: #c47a2c;   /* material – clay       */
+            --c-p: #8e6bb0;   /* pictorial – paint     */
+            --p-pre: #c68642; /* pravěk   */
+            --p-anc: #6a9f4d; /* starověk */
+            --p-mid: #5da8c4; /* středověk */
+            --p-mod: #9b7cb9; /* novověk  */
+            --mono: 'Fira Mono', ui-monospace, monospace;
+            --sans: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 10% 90%, rgba(126,200,217,.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 20%, rgba(198,134,66,.1) 0%, transparent 50%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+        .header { text-align: center; margin-bottom: 1rem; display: flex; flex-direction: column; align-items: center; }
+        .header .capy-icon { font-size: 3rem; margin-bottom: .25rem; display: block; }
+        h1 { font-size: 2rem; font-weight: 800; color: var(--accent); margin-bottom: .25rem; text-wrap: balance; }
+        .subtitle { color: var(--muted); margin-bottom: .6rem; font-size: .95rem; font-weight: 600; }
+
+        /* ── Language switch ───────────────────────── */
+        .lang-switch {
+            display: inline-flex;
+            background: var(--surface2);
+            border-radius: .65rem;
+            padding: .25rem;
+            gap: .25rem;
+            margin-bottom: .5rem;
+        }
+        .lang-switch button {
+            background: transparent;
+            color: var(--muted);
+            padding: .4rem .9rem;
+            font-size: .85rem;
+        }
+        .lang-switch button .code {
+            font-family: var(--mono);
+            font-size: .72rem;
+            background: var(--surface);
+            border-radius: .3rem;
+            padding: .05rem .3rem;
+            margin-right: .35rem;
+        }
+        .lang-switch button.active { background: var(--paper); color: var(--accent); box-shadow: 0 2px 8px rgba(139,94,60,.12); }
+        .legend { font-size: .8rem; color: var(--muted); font-weight: 600; }
+        .legend b { color: var(--red); }
+
+        /* ── Tabs ───────────────────────────────────── */
+        .tabs {
+            display: grid;
+            grid-template-columns: repeat(4, auto);
+            gap: .5rem;
+            background: var(--surface);
+            border: 2px solid var(--surface2);
+            border-radius: 1rem;
+            padding: .35rem;
+            margin-bottom: 1.75rem;
+            box-shadow: 0 4px 16px rgba(139,94,60,.06);
+        }
+        .tab-btn {
+            font-family: var(--sans);
+            font-weight: 700;
+            font-size: .95rem;
+            padding: .65rem 1.2rem;
+            border: none;
+            border-radius: .65rem;
+            cursor: pointer;
+            background: transparent;
+            color: var(--muted);
+            transition: all .2s;
+        }
+        .tab-btn:hover { color: var(--accent); }
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #fff;
+            box-shadow: 0 2px 12px rgba(139,94,60,.25);
+        }
+        .tab-panel { display: none; width: 100%; flex-direction: column; align-items: center; }
+        .tab-panel.active { display: flex; }
+
+        /* ── Controls ───────────────────────────────── */
+        .controls {
+            background: var(--surface);
+            border: 2px solid var(--surface2);
+            border-radius: 1.25rem;
+            padding: 1.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            align-items: center;
+            margin-bottom: 2rem;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 4px 24px rgba(139,94,60,.08);
+        }
+        .control-group { display: flex; flex-direction: column; gap: .35rem; min-width: 0; width: 100%; max-width: 520px; }
+        .control-group label {
+            font-size: .75rem;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: var(--muted);
+            font-weight: 700;
+        }
+        .control-group select {
+            width: 100%;
+            padding: .55rem .75rem;
+            border-radius: .5rem;
+            border: 2px solid var(--surface2);
+            background: var(--paper);
+            color: var(--text);
+            font-family: var(--sans);
+            font-weight: 600;
+            font-size: .95rem;
+            cursor: pointer;
+        }
+        .control-group select:focus { outline: none; border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(198,134,66,.15); }
+        .controls .note { font-size: .9rem; color: var(--muted); font-weight: 600; text-align: center; max-width: 520px; }
+        .input-row { display: flex; gap: .75rem; align-items: center; justify-content: center; flex-wrap: wrap; }
+        button {
+            font-family: var(--sans);
+            font-weight: 700;
+            font-size: .9rem;
+            padding: .55rem 1.3rem;
+            border: none;
+            border-radius: .65rem;
+            cursor: pointer;
+            touch-action: manipulation;
+            transition: transform .1s, box-shadow .2s, background .2s;
+        }
+        button:active { transform: scale(.97); }
+        button:focus-visible, a:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--accent2); outline-offset: 2px; }
+        button:disabled { opacity: .4; cursor: not-allowed; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
+        .btn-primary:hover { box-shadow: 0 4px 20px rgba(139,94,60,.3); }
+        .btn-secondary { background: var(--surface2); color: var(--accent); }
+        .btn-secondary:hover { background: #e6d3b8; }
+        .btn-generate { background: linear-gradient(135deg, var(--green), #7db85e); color: #fff; }
+        .btn-generate:hover { box-shadow: 0 4px 20px rgba(106,159,77,.3); }
+
+        /* ── Problem display (lesson question) ─────── */
+        .problem-display {
+            font-size: 1.35rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            background: var(--surface);
+            border: 2px solid var(--surface2);
+            border-radius: 1rem;
+            padding: .75rem 1.5rem;
+            display: inline-block;
+            max-width: 100%;
+        }
+        .problem-display .label { color: var(--muted); font-size: 1rem; margin-right: .35rem; }
+        .problem-display .target { color: var(--accent); font-weight: 800; }
+
+        /* ── Step area ──────────────────────────────── */
+        .step-area { max-width: 900px; width: 100%; }
+        .step-nav { display: flex; justify-content: center; gap: .75rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+        .step-nav button { min-width: 0; flex: 1 1 auto; max-width: 140px; }
+        .step-counter { font-size: .85rem; color: var(--muted); text-align: center; margin-bottom: .75rem; font-weight: 600; }
+        .step-card {
+            background: var(--surface);
+            border: 2px solid var(--surface2);
+            border-radius: 1.25rem;
+            padding: clamp(1rem, 3vw, 2rem);
+            margin-bottom: 1rem;
+            animation-duration: .4s;
+            box-shadow: 0 2px 16px rgba(139,94,60,.06);
+        }
+        .step-card h3 { font-size: 1.1rem; color: var(--accent); margin-bottom: .75rem; text-wrap: balance; }
+        .narrative { color: var(--text); font-size: 1rem; line-height: 1.65; margin-bottom: 1rem; max-width: 68ch; }
+        .narrative p + p, .narrative p + ul, .narrative ul + p, .narrative p + ol, .narrative ol + p { margin-top: .55rem; }
+        .narrative ul, .narrative ol { padding-left: 1.4rem; }
+        .narrative li { margin: .15rem 0; }
+        .narrative strong { color: var(--orange); }
+        .hl-green { color: var(--green); font-weight: 800; }
+        .hl-red { color: var(--red); font-weight: 800; }
+        .hl-blue { color: var(--blue); font-weight: 800; }
+        .hl-accent { color: var(--accent); font-weight: 800; }
+        .hl-purple { color: var(--purple); font-weight: 800; }
+        .cz { color: var(--muted); font-style: italic; font-weight: 600; }
+        .formula {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: .92em;
+            background: var(--surface2);
+            padding: .15rem .55rem;
+            border-radius: .4rem;
+            margin: 0 .15rem;
+        }
+        /* "!" = důležitá informace, like in the notebook */
+        .must {
+            position: relative;
+            background: rgba(212,91,91,.07);
+            border-left: 4px solid var(--red);
+            border-radius: 0 .5rem .5rem 0;
+            padding: .4rem .6rem .4rem 2rem;
+        }
+        .must::before {
+            content: '!';
+            position: absolute;
+            left: .55rem;
+            top: .35rem;
+            font-weight: 800;
+            font-size: 1.15rem;
+            color: var(--red);
+            font-family: var(--sans);
+        }
+
+        /* ── Visual box (like geo-svg-wrap) ────────── */
+        .viz {
+            background: var(--paper);
+            border: 2px solid var(--surface2);
+            border-radius: .75rem;
+            padding: .85rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .viz + .viz { margin-top: .75rem; }
+        .viz svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+        .viz-cap { text-align: center; font-size: .82rem; color: var(--muted); font-weight: 700; margin-top: .5rem; }
+        .svg-label { font-family: var(--sans); font-weight: 800; }
+        .svg-small { font-family: var(--sans); font-weight: 700; }
+
+        /* three-column cards (sources, theories) */
+        .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; }
+        .col-card {
+            border: 2px solid var(--surface2);
+            border-radius: .75rem;
+            padding: .75rem .6rem;
+            text-align: center;
+            transition: opacity .3s, transform .3s, border-color .3s;
+            min-width: 0;
+        }
+        .col-card .ico { font-size: 2rem; line-height: 1.2; }
+        .col-card h4 { color: var(--c); font-size: 1rem; margin: .2rem 0 .45rem; }
+        .col-card .detail { display: flex; flex-direction: column; gap: .45rem; }
+        .col-card .what { font-size: .82rem; color: var(--text); }
+        .col-card .place { font-weight: 800; font-size: .85rem; color: var(--c); }
+        .col-card.on { border-color: var(--c); box-shadow: 0 0 0 3px rgba(198,134,66,.12); transform: translateY(-2px); }
+        .col-card.dim { opacity: .35; }
+        .chips { display: flex; flex-wrap: wrap; gap: .3rem; justify-content: center; }
+        .chip {
+            background: var(--surface2);
+            color: var(--text);
+            border-radius: 999px;
+            padding: .15rem .6rem;
+            font-size: .8rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* places (library, archive, museum, gallery) */
+        .places { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; }
+        .place-card {
+            position: relative;
+            border: 2px solid var(--surface2);
+            border-radius: .75rem;
+            padding: .7rem .5rem;
+            text-align: center;
+            transition: opacity .3s, border-color .3s;
+            min-width: 0;
+        }
+        .place-card .ico { font-size: 2.1rem; }
+        .place-card h4 { color: var(--accent); font-size: .95rem; margin: .15rem 0 .3rem; }
+        .place-card .what { font-size: .8rem; }
+        .place-card.on { border-color: var(--accent2); background: rgba(198,134,66,.07); }
+        .place-card.dim { opacity: .35; }
+        .place-card .here {
+            position: absolute; top: -.7rem; right: -.4rem;
+            background: var(--accent2); color: #fff; border-radius: 999px;
+            font-size: .72rem; font-weight: 800; padding: .1rem .45rem;
+        }
+
+        /* chains (cause → event → consequence) */
+        .chain { display: flex; align-items: stretch; justify-content: center; gap: .4rem; }
+        .chain .box {
+            flex: 1 1 0;
+            border: 2px solid var(--c);
+            border-radius: .75rem;
+            padding: .6rem .5rem;
+            text-align: center;
+            min-width: 0;
+        }
+        .chain .box .tag { font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; font-weight: 800; color: var(--c); }
+        .chain .box .ico { font-size: 1.8rem; }
+        .chain .box .txt { font-size: .85rem; font-weight: 700; }
+        .chain .arrow { align-self: center; font-size: 1.4rem; color: var(--muted); font-weight: 800; }
+
+        /* experts / tricky rows */
+        .rows { display: flex; flex-direction: column; gap: .45rem; }
+        .row-item {
+            display: grid;
+            grid-template-columns: 2.2rem 1fr auto;
+            align-items: center;
+            gap: .5rem;
+            border: 2px solid var(--surface2);
+            border-radius: .6rem;
+            padding: .4rem .6rem;
+        }
+        .row-item .ico { font-size: 1.5rem; text-align: center; }
+        .row-item .name { font-weight: 700; min-width: 0; }
+        .row-item .name small { display: block; font-weight: 600; color: var(--muted); }
+        .badge-type { font-size: .78rem; font-weight: 800; color: #fff; background: var(--c); border-radius: 999px; padding: .15rem .6rem; white-space: nowrap; }
+
+        /* timeline of periods */
+        .timeline { position: relative; padding: 1.7rem 0 3.1rem; }
+        .tl-bar { display: flex; border-radius: .6rem; overflow: hidden; min-height: 4.2rem; }
+        .tl-seg {
+            background: var(--c);
+            color: #fff;
+            padding: .45rem .35rem;
+            text-align: center;
+            display: flex; flex-direction: column; justify-content: center;
+            transition: opacity .3s, filter .3s;
+            min-width: 0;
+        }
+        .tl-seg b { font-size: .95rem; }
+        .tl-seg span { font-size: .72rem; font-weight: 700; opacity: .95; }
+        .tl-seg.dim { opacity: .28; filter: grayscale(.4); }
+        .tl-mark { position: absolute; transform: translateX(-50%); font-size: .72rem; font-weight: 800; color: var(--text); white-space: nowrap; text-align: center; }
+        .tl-mark.top { top: 0; }
+        .tl-mark.bottom { bottom: 1.55rem; }
+        .tl-mark::after { content: ''; display: block; width: 2px; height: .4rem; background: var(--muted); margin: 0 auto; }
+        .tl-mark.bottom::after { display: none; }
+        .tl-mark.bottom::before { content: ''; display: block; width: 2px; height: .4rem; background: var(--muted); margin: 0 auto; }
+        .tl-grade {
+            position: absolute; bottom: 0; left: 0;
+            border-top: 3px solid var(--accent);
+            color: var(--accent); font-size: .78rem; font-weight: 800; text-align: center; padding-top: .1rem;
+        }
+        .tl-note { font-size: .75rem; color: var(--muted); text-align: right; font-weight: 600; }
+
+        /* creation days */
+        .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: .35rem; }
+        .day { border: 2px solid var(--surface2); border-radius: .6rem; padding: .4rem .2rem; text-align: center; min-width: 0; }
+        .day .n { font-size: .72rem; font-weight: 800; color: var(--muted); }
+        .day .ico { font-size: 1.35rem; }
+        .day .txt { font-size: .72rem; font-weight: 700; line-height: 1.2; }
+        .day.on { border-color: var(--accent2); background: rgba(198,134,66,.08); }
+
+        /* natural selection panels */
+        .panels { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; align-items: flex-start; }
+        .panel { flex: 1 1 140px; max-width: 200px; text-align: center; }
+        .panel .cap { font-size: .8rem; font-weight: 700; margin-top: .3rem; }
+        .panels .arrow { align-self: center; font-size: 1.3rem; color: var(--muted); font-weight: 800; }
+
+        /* puzzle */
+        .puzzle-wrap { display: flex; align-items: center; justify-content: center; gap: .8rem; flex-wrap: wrap; }
+        .puzzle { display: grid; grid-template-columns: repeat(4, 2.6rem); gap: .25rem; }
+        .puzzle .pc {
+            width: 2.6rem; height: 2.6rem; border-radius: .4rem;
+            background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 1.35rem;
+        }
+        .puzzle .pc.gap { background: transparent; border: 2px dashed var(--muted); color: var(--muted); font-weight: 800; font-size: 1rem; }
+        .puzzle .pc.new { background: rgba(106,159,77,.25); outline: 2px solid var(--green); }
+        .pile { position: relative; width: 9rem; height: 7rem; }
+        .pile .pc { position: absolute; }
+        .puzzle-arrow { font-size: 1.6rem; color: var(--muted); font-weight: 800; }
+
+        /* video links */
+        .videos { display: flex; flex-direction: column; gap: .45rem; margin-top: .75rem; }
+        .video-link {
+            display: flex; align-items: center; gap: .6rem;
+            border: 2px solid var(--surface2); border-radius: .6rem; padding: .5rem .7rem;
+            color: var(--text); text-decoration: none; background: var(--paper);
+        }
+        .video-link:hover { border-color: var(--red); }
+        .video-link .play { background: var(--red); color: #fff; border-radius: .4rem; padding: .2rem .5rem; font-weight: 800; font-size: .8rem; white-space: nowrap; }
+        .video-link .vt { font-weight: 700; font-size: .88rem; min-width: 0; }
+        .video-link .vt small { display: block; color: var(--muted); font-weight: 600; }
+
+        /* ── Quiz ───────────────────────────────────── */
+        .q-text { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.45; }
+        .opts { display: grid; gap: .5rem; }
+        .opt {
+            text-align: left;
+            background: var(--paper);
+            color: var(--text);
+            border: 2px solid var(--surface2);
+            padding: .75rem 1rem;
+            font-size: .95rem;
+            min-height: 48px;
+        }
+        .opt:hover:not(:disabled) { border-color: var(--accent2); }
+        .opt:disabled { opacity: 1; cursor: default; }
+        .opt.correct { border-color: var(--green); background: rgba(106,159,77,.12); }
+        .opt.wrong { border-color: var(--red); background: rgba(212,91,91,.1); }
+        .opt.faded { opacity: .5; }
+        .explain {
+            margin-top: 1rem;
+            border-radius: .75rem;
+            padding: .75rem 1rem;
+            font-size: .95rem;
+            line-height: 1.55;
+            background: var(--surface2);
+        }
+        .explain.ok { background: rgba(106,159,77,.13); }
+        .explain.bad { background: rgba(212,91,91,.1); }
+        .explain .verdict { font-weight: 800; display: block; margin-bottom: .2rem; }
+
+        /* ── Test ───────────────────────────────────── */
+        .q-num {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-width: 2rem; height: 2rem; border-radius: 999px; padding: 0 .4rem;
+            background: var(--accent); color: #fff; font-weight: 800; margin-right: .4rem; font-size: .95rem;
+        }
+        .answer-box {
+            width: 100%;
+            min-height: 6.5rem;
+            padding: .75rem;
+            border-radius: .65rem;
+            border: 2px solid var(--surface2);
+            background: var(--paper);
+            color: var(--text);
+            font-family: var(--sans);
+            font-size: 16px;
+            line-height: 1.5;
+            resize: vertical;
+            margin-bottom: .75rem;
+        }
+        .answer-box:focus { outline: none; border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(198,134,66,.15); }
+        .test-btns { display: flex; gap: .5rem; flex-wrap: wrap; }
+        .feedback { margin-top: 1rem; display: flex; flex-direction: column; gap: .75rem; }
+        .checklist { list-style: none; display: flex; flex-direction: column; gap: .3rem; }
+        .checklist li { display: grid; grid-template-columns: 1.6rem 1fr; gap: .3rem; font-weight: 700; font-size: .95rem; }
+        .checklist li .mk { font-weight: 800; }
+        .checklist li.ok .mk { color: var(--green); }
+        .checklist li.no .mk { color: var(--red); }
+        .checklist li.no { color: var(--muted); }
+        .checklist li small { display: block; font-weight: 600; color: var(--muted); }
+        .hint { background: rgba(232,148,58,.12); border-radius: .6rem; padding: .5rem .75rem; font-weight: 700; font-size: .9rem; }
+        .model { background: rgba(106,159,77,.1); border: 2px solid rgba(106,159,77,.4); border-radius: .75rem; padding: .7rem .9rem; line-height: 1.55; }
+        .model .ttl { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 800; color: var(--green); display: block; margin-bottom: .2rem; }
+        .pts { font-family: var(--mono); font-weight: 700; color: var(--accent); }
+        .auto-note { font-size: .78rem; color: var(--muted); font-weight: 600; }
+
+        /* ── Result card ───────────────────────────── */
+        .result-card {
+            background: linear-gradient(135deg, rgba(126,200,217,.12), rgba(198,134,66,.08));
+            border: 2px solid var(--green);
+            border-radius: 1.25rem;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            margin-top: .5rem;
+            box-shadow: 0 2px 16px rgba(106,159,77,.1);
+        }
+        .result-card .big { font-size: 1.45rem; font-weight: 800; color: var(--green); text-wrap: balance; }
+        .result-card .sub { font-size: 1rem; color: var(--muted); margin-bottom: .5rem; }
+        .sum { text-align: left; margin-top: 1rem; display: flex; flex-direction: column; gap: .45rem; }
+        .sum-row {
+            display: grid; grid-template-columns: 2.2rem 1fr; gap: .5rem; align-items: start;
+            background: var(--paper); border: 2px solid var(--surface2); border-radius: .65rem; padding: .5rem .7rem;
+            font-size: .93rem; line-height: 1.5;
+        }
+        .sum-row .ico { font-size: 1.4rem; text-align: center; }
+        .reflect { margin-top: 1rem; display: flex; flex-direction: column; align-items: center; gap: .5rem; }
+        .reflect .ttl { font-weight: 800; color: var(--accent); font-size: .9rem; }
+        .reflect .btns { display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center; }
+        .review { text-align: left; margin-top: 1rem; display: flex; flex-direction: column; gap: .4rem; }
+        .review button { text-align: left; }
+        .grade { display: inline-block; font-size: 2.2rem; font-weight: 800; color: var(--accent); background: var(--paper); border: 3px solid var(--accent2); border-radius: 50%; width: 3.6rem; height: 3.6rem; line-height: 3.2rem; margin: .4rem 0; }
+
+        .progress-bar { width: 100%; height: 6px; background: var(--surface2); border-radius: 3px; margin-bottom: 1rem; overflow: hidden; }
+        .progress-bar .fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent2), var(--green)); transition: width .3s ease; }
+
+        .capy-speech {
+            background: var(--surface);
+            border: 2px solid var(--surface2);
+            border-radius: 1rem;
+            padding: .6rem 1rem;
+            font-size: .9rem;
+            color: var(--accent);
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            max-width: 520px;
+            position: relative;
+        }
+        .capy-speech::after {
+            content: '';
+            position: absolute;
+            bottom: -10px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid var(--surface2);
+        }
+        .footer { margin-top: 1.5rem; font-size: .78rem; color: var(--muted); text-align: center; font-weight: 600; }
+
+        /* ── Mobile ─────────────────────────────────── */
+        @media (max-width: 900px) {
+            body { padding: 1.25rem max(.75rem, env(safe-area-inset-left)) 1.25rem max(.75rem, env(safe-area-inset-right)); }
+            h1 { font-size: 1.6rem; }
+            .header .capy-icon { font-size: 2.5rem; }
+            .places { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+            body { padding: 1rem max(.6rem, env(safe-area-inset-left)) 1rem max(.6rem, env(safe-area-inset-right)); }
+            .header { margin-bottom: .5rem; }
+            .header .capy-icon { font-size: 2rem; margin-bottom: 0; }
+            h1 { font-size: 1.35rem; line-height: 1.2; }
+            .subtitle { font-size: .82rem; margin-bottom: .4rem; }
+            .tabs { grid-template-columns: repeat(2, 1fr); gap: .25rem; padding: .25rem; border-radius: .85rem; margin-bottom: 1rem; width: 100%; }
+            .tab-btn { padding: .65rem .4rem; font-size: .85rem; min-height: 44px; }
+            .capy-speech { font-size: .84rem; padding: .55rem .8rem; margin-bottom: 1rem; max-width: 100%; }
+            .controls { padding: 1rem; gap: 1rem; border-radius: 1rem; margin-bottom: 1.25rem; }
+            .control-group select { font-size: 16px; padding: .7rem .75rem; }
+            .input-row { width: 100%; gap: .5rem; }
+            .input-row button { flex: 1 1 calc(50% - .25rem); min-height: 48px; padding: .8rem .75rem; font-size: .88rem; }
+            .problem-display { font-size: 1.1rem; padding: .65rem 1rem; width: 100%; }
+            .step-card { padding: 1rem; border-radius: 1rem; margin-bottom: .75rem; }
+            .step-card h3 { font-size: 1rem; line-height: 1.3; }
+            .narrative { font-size: .95rem; line-height: 1.55; }
+            .viz { padding: .6rem; }
+            .step-nav { gap: .35rem; flex-wrap: nowrap; }
+            .step-nav button { font-size: .78rem; padding: .65rem .3rem; min-height: 44px; max-width: none; }
+            .cols3 { grid-template-columns: 1fr; }
+            .col-card.dim .detail { display: none; }
+            .col-card.dim { padding: .35rem; }
+            .col-card.dim .ico { font-size: 1.3rem; display: inline; }
+            .col-card.dim h4 { display: inline; margin-left: .3rem; }
+            .chain { flex-direction: column; }
+            .chain .arrow { transform: rotate(90deg); }
+            .days { grid-template-columns: repeat(4, 1fr); }
+            .result-card { padding: 1.25rem 1rem; }
+            .result-card .big { font-size: 1.2rem; }
+            .tl-seg { padding: .45rem .15rem; }
+            .tl-seg b { font-size: .74rem; overflow-wrap: anywhere; }
+            .tl-seg span { display: none; }
+        }
+        @media (max-width: 380px) {
+            h1 { font-size: 1.2rem; }
+            .tab-btn { font-size: .78rem; }
+            .step-nav button { font-size: .72rem; padding: .55rem .2rem; }
+            .places { grid-template-columns: 1fr 1fr; gap: .4rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <span class="capy-icon">🦫📜</span>
+    <h1 id="appTitle">Kapybaří akademie dějepisu</h1>
+    <p class="subtitle" id="appSubtitle"></p>
+    <div class="lang-switch" role="group" aria-label="Jazyk / Language">
+        <button id="langCs" type="button"><span class="code">CZ</span>Česky</button>
+        <button id="langEn" type="button"><span class="code">EN</span>English</button>
+    </div>
+    <p class="legend" id="appLegend"></p>
+</div>
+
+<div class="tabs" role="tablist" id="tabs"></div>
+<div id="panels" style="width:100%;display:flex;flex-direction:column;align-items:center;"></div>
+<p class="footer" id="appFooter"></p>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// LANGUAGE (CZ / EN)
+// ═══════════════════════════════════════════════════════════════
+let lang = 'cs';
+try { const saved = localStorage.getItem('capyHistoryLang'); if (saved === 'cs' || saved === 'en') lang = saved; } catch (e) {}
+
+// L({cs, en}) → text in the current language. Plain strings pass through.
+const L = o => (o && typeof o === 'object' && !Array.isArray(o)) ? (o[lang] ?? o.cs) : o;
+
+const UI = {
+    cs: {
+        docTitle: 'Kapybaří akademie dějepisu 🦫📜',
+        title: 'Kapybaří akademie dějepisu',
+        subtitle: 'Dějepis klidně a krok za krokem – s kamarádskou kapybarou',
+        legend: '<b>!</b> = důležitá informace (přijde do testu)',
+        footer: '6. třída · Jak poznáváme historii · Vznik člověka',
+        pickLesson: 'Vyber lekci',
+        start: '🦫 Začít lekci',
+        random: '🌿 Náhodné otázky',
+        startTest: '🦫 Začít test',
+        quickQuiz: '🌿 Rychlý kvíz (10 otázek)',
+        testNote: 'Stejné otázky jako ve školním testu. Napiš odpověď a kapybara ji zkontroluje.',
+        first: '⏮ Začátek', prev: '◀ Zpět', next: 'Další ▶', last: 'Konec ⏭',
+        step: 'Krok',
+        stepOf: (a, b) => `Krok ${a} z ${b}`,
+        questionOf: (a, b) => `Otázka ${a} z ${b}`,
+        summary: '✓ Shrnutí',
+        result: '✓ Výsledek',
+        lessonLabel: 'Lekce:',
+        spoken: 'Kapybara promluvila!',
+        remember: 'Zapamatuj si',
+        reflect: 'Ohlédnutí za lekcí – jak ti to šlo?',
+        reflectOk: '+ Rozumím → vyzkoušej se',
+        reflectNo: '? Nerozumím → ještě jednou',
+        nextLesson: 'Další lekce ▶',
+        newQuiz: '🌿 Nový kvíz',
+        question: 'Otázka',
+        correct: 'Správně! 🎉',
+        wrong: 'Tentokrát ne.',
+        rightAnswer: 'Správná odpověď:',
+        quizDisplay: n => `Kvíz: ${n} náhodných otázek`,
+        quizScore: (a, b) => `${a} z ${b} správně`,
+        quizMistakes: 'Tady se kapybara zastavila:',
+        check: '🦫 Zkontrolovat',
+        reveal: '🙈 Nevím – ukaž odpověď',
+        placeholder: 'Sem napiš svou odpověď…',
+        found: 'Kapybara v odpovědi našla:',
+        model: 'Vzorová odpověď',
+        points: 'Body',
+        foundSources: (n, need) => `Prameny: ${n} z ${need}`,
+        whereKept: 'Kde je uchováváme:',
+        emptyAnswer: 'Nejdřív něco napiš – nebo klikni na „Nevím".',
+        testDisplay: 'Zkušební test',
+        testDisplaySub: 'Jak poznáváme historii + Vznik člověka',
+        testScore: 'Tvůj výsledek',
+        grade: 'Kapybaří známka',
+        review: 'Zopakuj si:',
+        retry: '🔄 Zkusit test znovu',
+        autoNote: 'Kapybara hledá v odpovědi klíčová slova. Není to paní učitelka – porovnej svou odpověď i se vzorem.',
+        video: '📺 Video z hodiny',
+        watch: '▶ YouTube',
+        notToScale: 'není v měřítku',
+        wrongCat: (w, c) => `„${w}" je pramen ${c}.`,
+        catName: { w: 'písemný', m: 'hmotný', p: 'obrazový' },
+        msgs: [
+            'Pomalu a v klidu, kapybara nikam nespěchá 🦫',
+            'Dobře se dívej na obrázek 🌿',
+            'Krok po kroku se k tomu dostaneme 💧',
+            'Skvělé – pokračuj ♨️',
+            'Už jsme skoro u konce 🌾',
+            'Klidně, kapybaří styl 🦫',
+            'Jde ti to moc dobře 🌿',
+        ],
+        doneMsg: 'Hotovo! Klidně a pečlivě, přesně jak to mám rád 🌿🦫',
+        retryMsg: 'Nevadí! Projdeme to ještě jednou, pomalu 🦫',
+        quizMsg: 'Vyber jednu odpověď. Když nevíš, tipni si – nic se neděje 🌿',
+        quizGood: 'Správně! Kapybara spokojeně chroupe trávu 🌾',
+        quizBad: 'Nevadí, z chyb se učíme 💧',
+        testMsg: 'Napiš odpověď vlastními slovy. Pak klikni na „Zkontrolovat" 🦫',
+        testDoneMsg: 'Test máš za sebou! Teď se podívej, co si zopakovat 🌿',
+    },
+    en: {
+        docTitle: 'Capybara History Academy 🦫📜',
+        title: 'Capybara History Academy',
+        subtitle: 'Calm, step-by-step history with a friendly capybara',
+        legend: '<b>!</b> = important information (it will be in the test)',
+        footer: 'Year 6 (Czech school) · How we learn about history · Origin of humans',
+        pickLesson: 'Pick a lesson',
+        start: '🦫 Start lesson',
+        random: '🌿 Random questions',
+        startTest: '🦫 Start the test',
+        quickQuiz: '🌿 Quick quiz (10 questions)',
+        testNote: 'The same questions as the school test. Write your answer and the capybara will check it.',
+        first: '⏮ Start', prev: '◀ Back', next: 'Next ▶', last: 'Finish ⏭',
+        step: 'Step',
+        stepOf: (a, b) => `Step ${a} of ${b}`,
+        questionOf: (a, b) => `Question ${a} of ${b}`,
+        summary: '✓ Summary',
+        result: '✓ Result',
+        lessonLabel: 'Lesson:',
+        spoken: 'The capybara has spoken!',
+        remember: 'Remember',
+        reflect: 'Looking back – how did it go?',
+        reflectOk: '+ I get it → test me',
+        reflectNo: '? I don\'t get it → once more',
+        nextLesson: 'Next lesson ▶',
+        newQuiz: '🌿 New quiz',
+        question: 'Question',
+        correct: 'Correct! 🎉',
+        wrong: 'Not this time.',
+        rightAnswer: 'Correct answer:',
+        quizDisplay: n => `Quiz: ${n} random questions`,
+        quizScore: (a, b) => `${a} of ${b} correct`,
+        quizMistakes: 'Here is where the capybara stopped:',
+        check: '🦫 Check',
+        reveal: '🙈 I don\'t know – show me',
+        placeholder: 'Write your answer here… (Czech or English)',
+        found: 'The capybara found in your answer:',
+        model: 'Model answer',
+        points: 'Points',
+        foundSources: (n, need) => `Sources: ${n} of ${need}`,
+        whereKept: 'Where they are kept:',
+        emptyAnswer: 'Write something first – or tap "I don\'t know".',
+        testDisplay: 'Practice test',
+        testDisplaySub: 'How we learn about history + Origin of humans',
+        testScore: 'Your result',
+        grade: 'Capybara grade (Czech 1–5)',
+        review: 'Go over these again:',
+        retry: '🔄 Try the test again',
+        autoNote: 'The capybara looks for key words in your answer. It is not your teacher – compare your answer with the model too.',
+        video: '📺 Video from class (Czech)',
+        watch: '▶ YouTube',
+        notToScale: 'not to scale',
+        wrongCat: (w, c) => `"${w}" is a ${c} source.`,
+        catName: { w: 'written', m: 'material', p: 'pictorial' },
+        msgs: [
+            'Slowly and calmly, the capybara is in no hurry 🦫',
+            'Look carefully at the picture 🌿',
+            'One step at a time, we\'re getting there 💧',
+            'Wonderful – keep going ♨️',
+            'Almost there! 🌾',
+            'Steady and calm, capybara style 🦫',
+            'You\'re doing great 🌿',
+        ],
+        doneMsg: 'Done! Calm and tidy, just how I like it 🌿🦫',
+        retryMsg: 'No problem! Let\'s go through it again, slowly 🦫',
+        quizMsg: 'Pick one answer. If you don\'t know, guess – that\'s fine 🌿',
+        quizGood: 'Correct! The capybara happily munches some grass 🌾',
+        quizBad: 'No worries, mistakes help us learn 💧',
+        testMsg: 'Write the answer in your own words. Then tap "Check" 🦫',
+        testDoneMsg: 'Test finished! Now let\'s see what to go over again 🌿',
+    }
+};
+const t = k => UI[lang][k] ?? UI.cs[k] ?? k;
+
+// ─── Shared helpers ─────────────────────────────────────────
+function shuffle(a) { const r = a.slice(); for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; } return r; }
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+function fmtNum(x) { const r = Math.round(x * 10) / 10; return lang === 'cs' ? String(r).replace('.', ',') : String(r); }
+function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || '#000'; }
+
+// ═══════════════════════════════════════════════════════════════
+// VISUALS (the history version of the geometry grid drawings)
+// ═══════════════════════════════════════════════════════════════
+const czTag = cz => lang === 'en' && cz ? ` <span class="cz">(${cz})</span>` : '';
+
+const SRC_TYPES = [
+    { k: 'w', c: '--c-w', ico: '📜', cz: 'písemné', name: { cs: 'Písemné', en: 'Written' },
+      ex: { cs: ['knihy', 'listiny', 'vyryté nápisy', 'smlouvy'], en: ['books', 'charters', 'carved inscriptions', 'treaties'] },
+      what: { cs: '🔍 obsah a doba, kdy vznikly', en: '🔍 the content and when it was made' },
+      place: { cs: '📚 knihovna + 🗄️ archiv', en: '📚 library + 🗄️ archive' } },
+    { k: 'm', c: '--c-m', ico: '🏺', cz: 'hmotné', name: { cs: 'Hmotné', en: 'Material' },
+      ex: { cs: ['zbraně', 'nádobí', 'nářadí', 'šperky'], en: ['weapons', 'dishes', 'tools', 'jewellery'] },
+      what: { cs: '🔍 k čemu sloužily, jak a z čeho byly vyrobeny, jak jsou staré, odkud pocházejí', en: '🔍 what it was for, how and from what it was made, how old it is, where it comes from' },
+      place: { cs: '🏛️ muzeum', en: '🏛️ museum' } },
+    { k: 'p', c: '--c-p', ico: '🖼️', cz: 'obrazové', name: { cs: 'Obrazové', en: 'Pictorial' },
+      ex: { cs: ['obrazy', 'sochy', 'fotografie', 'filmy', 'mapy'], en: ['paintings', 'statues', 'photos', 'films', 'maps'] },
+      what: { cs: '🔍 co znázorňují, jak a proč', en: '🔍 what it shows, how and why' },
+      place: { cs: '🖼️ galerie', en: '🖼️ gallery' } },
+];
+
+function vizSources(active) {
+    let h = '<div class="viz"><div class="cols3">';
+    SRC_TYPES.forEach(s => {
+        const cls = (active === 'all' || active === 'intro') ? '' : (active === s.k ? 'on' : 'dim');
+        const chips = L(s.ex).map(x => `<span class="chip">${x}</span>`).join('');
+        const more = active === 'intro' ? '' : `<div class="what">${L(s.what)}</div><div class="place">${L(s.place)}</div>`;
+        h += `<div class="col-card ${cls}" style="--c:var(${s.c})"><div class="ico">${s.ico}</div>
+              <h4>${L(s.name)}${czTag(s.cz)}</h4><div class="detail"><div class="chips">${chips}</div>${more}</div></div>`;
+    });
+    return h + '</div></div>';
+}
+
+const PLACES = [
+    { k: 'lib', ico: '📚', cz: 'knihovna', name: { cs: 'Knihovna', en: 'Library' },
+      what: { cs: 'hlavně <b>tištěné</b> písemné prameny (knihy, noviny)', en: 'mostly <b>printed</b> written sources (books, newspapers)' } },
+    { k: 'arch', ico: '🗄️', cz: 'archiv', name: { cs: 'Archiv', en: 'Archive' },
+      what: { cs: 'převážně <b>ručně psané</b> prameny (listiny, smlouvy, kroniky)', en: 'mostly <b>handwritten</b> sources (charters, treaties, chronicles)' } },
+    { k: 'mus', ico: '🏛️', cz: 'muzeum', name: { cs: 'Muzeum', en: 'Museum' },
+      what: { cs: '<b>hmotné</b> prameny – v expozici nebo v depozitáři', en: '<b>material</b> sources – on display or in storage' } },
+    { k: 'gal', ico: '🖼️', cz: 'galerie', name: { cs: 'Galerie', en: 'Gallery' },
+      what: { cs: '<b>obrazové</b> prameny (obrazy, sochy)', en: '<b>pictorial</b> sources (paintings, statues)' } },
+];
+
+function vizPlaces(active) {
+    const on = k => active === 'all' || active === k || (active === 'w' && (k === 'lib' || k === 'arch'));
+    let h = '<div class="viz"><div class="places">';
+    PLACES.forEach(p => {
+        const cls = active === 'all' ? '' : (on(p.k) ? 'on' : 'dim');
+        const here = (active !== 'all' && on(p.k)) ? `<span class="here">🦫 ${lang === 'cs' ? 'tady!' : 'here!'}</span>` : '';
+        h += `<div class="place-card ${cls}">${here}<div class="ico">${p.ico}</div><h4>${L(p.name)}${czTag(p.cz)}</h4><div class="what">${L(p.what)}</div></div>`;
+    });
+    return h + '</div></div>';
+}
+
+function vizMuseum(active) {
+    const cs = lang === 'cs';
+    const expoOn = active === 'expo' || active === 'both';
+    const depoOn = active === 'depo' || active === 'both';
+    let s = `<svg viewBox="0 0 420 255" width="420" height="255" xmlns="http://www.w3.org/2000/svg" role="img">`;
+    s += `<polygon points="20,72 210,12 400,72" style="fill:var(--surface2);stroke:var(--accent);stroke-width:3;stroke-linejoin:round"/>`;
+    s += `<text x="210" y="60" text-anchor="middle" class="svg-label" style="fill:var(--accent);font-size:19px;letter-spacing:3px">${cs ? 'MUZEUM' : 'MUSEUM'}</text>`;
+    s += `<rect x="30" y="72" width="360" height="168" style="fill:var(--paper);stroke:var(--accent);stroke-width:3"/>`;
+    // left room – expozice
+    s += `<rect x="31.5" y="73.5" width="178" height="165" style="fill:${expoOn ? 'rgba(106,159,77,.16)' : 'transparent'}"/>`;
+    s += `<text x="120" y="98" text-anchor="middle" class="svg-label" style="fill:var(--green);font-size:16px">${cs ? 'EXPOZICE' : 'EXPOZICE'}</text>`;
+    s += `<text x="120" y="116" text-anchor="middle" class="svg-small" style="fill:var(--muted);font-size:13px">${cs ? '(výstava)' : '(exhibition)'}</text>`;
+    [[45, '🏺'], [108, '🗡️']].forEach(([x, e]) => {
+        s += `<rect x="${x}" y="140" width="50" height="58" rx="4" style="fill:rgba(126,200,217,.28);stroke:var(--blue);stroke-width:2"/>`;
+        s += `<rect x="${x - 4}" y="198" width="58" height="10" style="fill:var(--surface2)"/>`;
+        s += `<text x="${x + 25}" y="180" text-anchor="middle" style="font-size:26px">${e}</text>`;
+    });
+    s += `<text x="185" y="230" text-anchor="middle" style="font-size:30px">🧒</text>`;
+    // wall
+    s += `<line x1="210" y1="72" x2="210" y2="240" style="stroke:var(--accent);stroke-width:3"/>`;
+    // right room – depozitář
+    s += `<rect x="211.5" y="73.5" width="177" height="165" style="fill:${depoOn ? 'rgba(198,134,66,.16)' : 'transparent'}"/>`;
+    s += `<text x="300" y="98" text-anchor="middle" class="svg-label" style="fill:var(--accent2);font-size:16px">DEPOZITÁŘ</text>`;
+    s += `<text x="300" y="116" text-anchor="middle" class="svg-small" style="fill:var(--muted);font-size:13px">${cs ? '(sklad)' : '(storage)'}</text>`;
+    [160, 200, 236].forEach(y => { s += `<line x1="222" y1="${y}" x2="378" y2="${y}" style="stroke:var(--accent);stroke-width:3"/>`; });
+    ['📦', '📦', '🏺', '📦'].forEach((e, i) => { s += `<text x="${240 + i * 38}" y="155" text-anchor="middle" style="font-size:22px">${e}</text>`; });
+    ['📦', '🪓', '📦', '📦'].forEach((e, i) => { s += `<text x="${240 + i * 38}" y="195" text-anchor="middle" style="font-size:22px">${e}</text>`; });
+    ['📦', '📦', '🪙', '📦'].forEach((e, i) => { s += `<text x="${240 + i * 38}" y="231" text-anchor="middle" style="font-size:22px">${e}</text>`; });
+    s += `<text x="372" y="96" text-anchor="middle" style="font-size:16px">🔒</text>`;
+    // dim the room that is not in focus
+    if (active === 'expo') s += `<rect x="211.5" y="73.5" width="177" height="165" style="fill:var(--paper);opacity:.6"/>`;
+    if (active === 'depo') s += `<rect x="31.5" y="73.5" width="178" height="165" style="fill:var(--paper);opacity:.6"/>`;
+    s += `</svg>`;
+    const cap = active === 'expo' ? (cs ? 'Expozice: předměty jsou vystavené pro návštěvníky' : 'Expozice: objects are on display for visitors')
+              : active === 'depo' ? (cs ? 'Depozitář: předměty jsou uložené ve skladu, nejsou vystavené' : 'Depozitář: objects are kept in storage, not on display')
+              : (cs ? 'Muzeum má dvě části: expozici a depozitář' : 'A museum has two parts: the exhibition and the storage');
+    return `<div class="viz">${s}<div class="viz-cap">${cap}</div></div>`;
+}
+
+function vizDig() {
+    const cs = lang === 'cs';
+    let s = `<svg viewBox="0 0 420 245" width="420" height="245" xmlns="http://www.w3.org/2000/svg" role="img">`;
+    s += `<rect x="0" y="0" width="420" height="52" style="fill:var(--water-light)"/>`;
+    s += `<text x="40" y="44" style="font-size:30px">🧑‍🔬</text><text x="78" y="44" style="font-size:24px">⛏️</text>`;
+    s += `<text x="300" y="32" text-anchor="middle" class="svg-label" style="fill:var(--accent);font-size:15px">${cs ? 'vykopávky' : 'excavation'}</text>`;
+    const layers = [
+        { y: 52, h: 62, fill: '#e2c497', items: ['🪙', '🗝️'], name: cs ? 'středověk' : 'Middle Ages' },
+        { y: 114, h: 62, fill: '#cfa56f', items: ['🏺', '⚱️'], name: cs ? 'starověk' : 'Antiquity' },
+        { y: 176, h: 69, fill: '#b08453', items: ['🦴', '🪨'], name: cs ? 'pravěk' : 'Prehistory' },
+    ];
+    layers.forEach(l => {
+        s += `<rect x="0" y="${l.y}" width="420" height="${l.h}" style="fill:${l.fill}"/>`;
+        l.items.forEach((e, i) => { s += `<text x="${70 + i * 80}" y="${l.y + l.h / 2 + 10}" text-anchor="middle" style="font-size:26px">${e}</text>`; });
+        s += `<text x="300" y="${l.y + l.h / 2 + 6}" text-anchor="middle" class="svg-label" style="fill:#4a3728;font-size:15px">${l.name}</text>`;
+    });
+    s += `<line x1="392" y1="64" x2="392" y2="226" style="stroke:#4a3728;stroke-width:3"/>`;
+    s += `<polygon points="384,222 400,222 392,238" style="fill:#4a3728"/>`;
+    s += `<text x="378" y="150" text-anchor="middle" class="svg-small" style="fill:#4a3728;font-size:13px" transform="rotate(-90 378 150)">${cs ? 'hlouběji = starší' : 'deeper = older'}</text>`;
+    s += `</svg>`;
+    return `<div class="viz">${s}</div>`;
+}
+
+const PUZZLE_TILES = ['📜', '🏺', '🖼️', '🗺️', '🪙', '🦴', '🏰', '⚔️', '👑', '📖', '🗿', '🌾'];
+function vizPuzzle(mode) {
+    const cs = lang === 'cs';
+    if (mode === 'build') {
+        const pos = [[0, 10, -12], [55, 0, 8], [100, 25, -5], [20, 60, 14], [75, 55, -18], [115, 70, 6]];
+        let pile = '<div class="pile">';
+        pos.forEach(([x, y, r], i) => { pile += `<div class="pc" style="left:${x}px;top:${y}px;transform:rotate(${r}deg)">${PUZZLE_TILES[i * 2]}</div>`; });
+        pile += '</div>';
+        const grid = '<div class="puzzle">' + PUZZLE_TILES.map(e => `<div class="pc">${e}</div>`).join('') + '</div>';
+        return `<div class="viz"><div class="puzzle-wrap">${pile}<div class="puzzle-arrow">→</div>${grid}</div>
+                <div class="viz-cap">${cs ? 'dílčí informace → celkový obraz období' : 'partial information → a whole picture of the period'}</div></div>`;
+    }
+    const gaps = [2, 5, 9];
+    const grid = '<div class="puzzle">' + PUZZLE_TILES.map((e, i) =>
+        gaps.includes(i) ? '<div class="pc gap">?</div>' : `<div class="pc${i === 7 ? ' new' : ''}">${e}</div>`).join('') + '</div>';
+    return `<div class="viz"><div class="puzzle-wrap">${grid}</div>
+            <div class="viz-cap">${cs ? 'Zelený dílek = nově nalezený pramen. Otazníky = to, co zatím nevíme.' : 'Green piece = a newly found source. Question marks = what we still don\'t know.'}</div></div>`;
+}
+
+function vizVenn() {
+    const cs = lang === 'cs';
+    let s = `<svg viewBox="0 0 380 255" width="380" height="255" xmlns="http://www.w3.org/2000/svg" role="img">`;
+    s += `<ellipse cx="190" cy="128" rx="180" ry="118" style="fill:rgba(198,134,66,.13);stroke:var(--accent2);stroke-width:2.5"/>`;
+    s += `<text x="190" y="38" text-anchor="middle" class="svg-label" style="fill:var(--accent);font-size:18px;letter-spacing:2px">${cs ? 'MINULOST' : 'THE PAST'}</text>`;
+    s += `<text x="190" y="57" text-anchor="middle" class="svg-small" style="fill:var(--accent);font-size:13px">${cs ? 'vše, co se stalo' : 'everything that happened'}</text>`;
+    [[48, 125], [70, 185], [330, 118], [312, 190], [92, 78], [288, 76], [128, 222], [252, 224]].forEach(([x, y]) => {
+        s += `<text x="${x}" y="${y}" text-anchor="middle" class="svg-label" style="fill:var(--muted);font-size:20px;opacity:.6">?</text>`;
+    });
+    s += `<circle cx="190" cy="148" r="74" style="fill:rgba(106,159,77,.2);stroke:var(--green);stroke-width:2.5"/>`;
+    s += `<text x="190" y="124" text-anchor="middle" class="svg-label" style="fill:var(--green);font-size:16px;letter-spacing:1px">${cs ? 'HISTORIE' : 'HISTORY'}</text>`;
+    s += `<text x="190" y="143" text-anchor="middle" class="svg-small" style="fill:var(--text);font-size:12.5px">${cs ? 'co víme z pramenů' : 'known from sources'}</text>`;
+    s += `<text x="190" y="180" text-anchor="middle" style="font-size:24px">📜 🏺 🖼️</text>`;
+    s += `</svg>`;
+    return `<div class="viz">${s}<div class="viz-cap">${cs ? 'Otazníky = minulost, o které nemáme žádné prameny' : 'Question marks = the past we have no sources for'}</div></div>`;
+}
+
+function vizQuestions() {
+    const q = lang === 'cs'
+        ? ['❓ Co se stalo?', '📅 Kdy?', '📍 Kde?', '👥 Kdo?', '🤔 Proč? (příčina)', '➡️ Co z toho vzniklo? (důsledek)']
+        : ['❓ What happened?', '📅 When?', '📍 Where?', '👥 Who?', '🤔 Why? (cause)', '➡️ What came of it? (consequence)'];
+    return `<div class="viz"><div class="chips" style="gap:.45rem">${q.map(x => `<span class="chip" style="font-size:.9rem;padding:.35rem .8rem">${x}</span>`).join('')}</div>
+            <div class="viz-cap">${lang === 'cs' ? 'Otázky, na které dějepis hledá odpovědi' : 'Questions that history tries to answer'}</div></div>`;
+}
+
+function chainBoxes(boxes) {
+    return '<div class="chain">' + boxes.map((b, i) =>
+        (i ? '<div class="arrow">→</div>' : '') +
+        `<div class="box" style="--c:var(${b.c})"><div class="tag">${b.tag}</div><div class="ico">${b.ico}</div><div class="txt">${b.txt}</div></div>`).join('') + '</div>';
+}
+
+function vizChain() {
+    const cs = lang === 'cs';
+    return '<div class="viz">' + chainBoxes([
+        { c: '--blue', tag: cs ? 'příčina' : 'cause (příčina)', ico: '🌾', txt: cs ? 'Lidé se naučili pěstovat obilí' : 'People learned to grow grain' },
+        { c: '--orange', tag: cs ? 'událost' : 'event (událost)', ico: '🏡', txt: cs ? 'Usadili se na jednom místě' : 'They settled in one place' },
+        { c: '--green', tag: cs ? 'důsledek' : 'consequence (důsledek)', ico: '🏘️', txt: cs ? 'Vznikly první vesnice' : 'The first villages appeared' },
+    ]) + `<div class="viz-cap">${cs ? 'Příklad z pravěku' : 'An example from prehistory'}</div></div>`;
+}
+
+function vizIdea() {
+    const cs = lang === 'cs';
+    return '<div class="viz">' + chainBoxes([
+        { c: '--purple', tag: cs ? 'stvořitel' : 'creator', ico: '💡', txt: cs ? 'vyšší inteligentní síla' : 'a higher intelligent force' },
+        { c: '--blue', tag: cs ? 'plán' : 'plan', ico: '📐', txt: cs ? 'chytrý plán' : 'a clever plan' },
+        { c: '--green', tag: cs ? 'výsledek' : 'result', ico: '🌍', txt: cs ? 'svět, život a člověk' : 'the world, life and humans' },
+    ]) + '</div>';
+}
+
+function vizLinear() {
+    const cs = lang === 'cs';
+    let s = `<svg viewBox="0 0 440 150" width="440" height="150" xmlns="http://www.w3.org/2000/svg" role="img">`;
+    s += `<line x1="40" y1="72" x2="410" y2="72" style="stroke:var(--accent);stroke-width:4"/>`;
+    s += `<polygon points="408,62 428,72 408,82" style="fill:var(--accent)"/>`;
+    s += `<circle cx="40" cy="72" r="10" style="fill:var(--accent2);stroke:var(--paper);stroke-width:2"/>`;
+    s += `<text x="24" y="42" class="svg-label" style="fill:var(--accent2);font-size:14px">⭐ ${cs ? 'pevný počátek' : 'fixed starting point'}</text>`;
+    [[110, '1'], [170, '2'], [230, '3'], [290, '…'], [360, '2026']].forEach(([x, l]) => {
+        s += `<line x1="${x}" y1="64" x2="${x}" y2="80" style="stroke:var(--accent);stroke-width:2"/>`;
+        s += `<text x="${x}" y="100" text-anchor="middle" class="svg-small" style="fill:var(--text);font-size:14px">${l}</text>`;
+    });
+    s += `<text x="425" y="102" text-anchor="end" class="svg-small" style="fill:var(--muted);font-size:12px">${cs ? 'roky →' : 'years →'}</text>`;
+    s += `<text x="220" y="136" text-anchor="middle" class="svg-small" style="fill:var(--muted);font-size:13px">${cs ? 'čas plyne jedním směrem, jako přímka' : 'time goes in one direction, like a straight line'}</text>`;
+    s += `</svg>`;
+    return `<div class="viz">${s}</div>`;
+}
+
+function vizCycle() {
+    const cs = lang === 'cs';
+    const cx = 150, cy = 150, r = 95;
+    let s = `<svg viewBox="0 0 300 300" width="300" height="300" xmlns="http://www.w3.org/2000/svg" role="img">`;
+    s += `<circle cx="${cx}" cy="${cy}" r="${r}" style="fill:none;stroke:var(--green);stroke-width:4"/>`;
+    [45, 135, 225, 315].forEach(a => {
+        const th = a * Math.PI / 180;
+        const px = cx + r * Math.sin(th), py = cy - r * Math.cos(th);
+        const tx = Math.cos(th), ty = Math.sin(th);      // clockwise tangent
+        const nx = -ty, ny = tx;                          // normal
+        const tip = [px + tx * 9, py + ty * 9];
+        const b1 = [px - tx * 6 + nx * 7, py - ty * 6 + ny * 7];
+        const b2 = [px - tx * 6 - nx * 7, py - ty * 6 - ny * 7];
+        s += `<polygon points="${tip.join(',')} ${b1.join(',')} ${b2.join(',')}" style="fill:var(--green)"/>`;
+    });
+    const seasons = cs
+        ? [['🌱', 'jaro'], ['☀️', 'léto'], ['🍂', 'podzim'], ['❄️', 'zima']]
+        : [['🌱', 'spring'], ['☀️', 'summer'], ['🍂', 'autumn'], ['❄️', 'winter']];
+    seasons.forEach(([e, name], i) => {
+        const th = i * 90 * Math.PI / 180;
+        const x = cx + r * Math.sin(th), y = cy - r * Math.cos(th);
+        s += `<circle cx="${x}" cy="${y}" r="25" style="fill:var(--paper);stroke:var(--surface2);stroke-width:2"/>`;
+        s += `<text x="${x}" y="${y + 9}" text-anchor="middle" style="font-size:24px">${e}</text>`;
+        const ly = i === 0 ? y - 32 : y + 42;
+        s += `<text x="${x}" y="${ly}" text-anchor="middle" class="svg-label" style="fill:var(--text);font-size:14px">${name}</text>`;
+    });
+    s += `<text x="${cx}" y="${cy + 4}" text-anchor="middle" style="font-size:30px">🔄</text>`;
+    s += `<text x="${cx}" y="${cy + 30}" text-anchor="middle" class="svg-label" style="fill:var(--green);font-size:14px">${cs ? 'opakuje se' : 'it repeats'}</text>`;
+    s += `</svg>`;
+    return `<div class="viz">${s}</div>`;
+}
+
+function vizEra() {
+    const cs = lang === 'cs';
+    const X = y => 230 + y * 0.6;   // 100 years = 60 px, the star sits at 230
+    let s = `<svg viewBox="0 0 460 155" width="460" height="155" xmlns="http://www.w3.org/2000/svg" role="img">`;
+    s += `<line x1="20" y1="72" x2="230" y2="72" style="stroke:var(--red);stroke-width:4"/>`;
+    s += `<line x1="230" y1="72" x2="425" y2="72" style="stroke:var(--green);stroke-width:4"/>`;
+    s += `<polygon points="423,62 443,72 423,82" style="fill:var(--green)"/>`;
+    [-300, -200, -100, 100, 200, 300].forEach(y => {
+        const x = X(y);
+        s += `<line x1="${x}" y1="64" x2="${x}" y2="80" style="stroke:var(--text);stroke-width:2"/>`;
+        s += `<text x="${x}" y="54" text-anchor="middle" class="svg-small" style="fill:var(--text);font-size:14px">${Math.abs(y)}</text>`;
+    });
+    s += `<text x="230" y="81" text-anchor="middle" style="font-size:22px">⭐</text>`;
+    s += `<text x="230" y="104" text-anchor="middle" class="svg-label" style="fill:var(--accent);font-size:13px">${cs ? 'narození Krista' : 'birth of Christ'}</text>`;
+    s += `<text x="115" y="126" text-anchor="middle" class="svg-label" style="fill:var(--red);font-size:16px">př. n. l.</text>`;
+    s += `<text x="115" y="145" text-anchor="middle" class="svg-small" style="fill:var(--muted);font-size:12px">${cs ? '← čím větší číslo, tím starší' : '← bigger number = older'}</text>`;
+    s += `<text x="345" y="126" text-anchor="middle" class="svg-label" style="fill:var(--green);font-size:16px">n. l.</text>`;
+    s += `<text x="345" y="145" text-anchor="middle" class="svg-small" style="fill:var(--muted);font-size:12px">${cs ? 'čím větší číslo, tím mladší →' : 'bigger number = later →'}</text>`;
+    s += `</svg>`;
+    return `<div class="viz">${s}</div>`;
+}
+
+const PERIODS = [
+    { k: 'pre', c: '--p-pre', w: 30, cz: 'pravěk', name: { cs: 'Pravěk', en: 'Prehistory' }, span: { cs: 'první lidé → písmo', en: 'first humans → writing' } },
+    { k: 'anc', c: '--p-anc', w: 24, cz: 'starověk', name: { cs: 'Starověk', en: 'Antiquity' }, span: { cs: 'písmo → pád Říma', en: 'writing → fall of Rome' } },
+    { k: 'mid', c: '--p-mid', w: 23, cz: 'středověk', name: { cs: 'Středověk', en: 'Middle Ages' }, span: { cs: 'hrady, rytíři', en: 'castles, knights' } },
+    { k: 'mod', c: '--p-mod', w: 23, cz: 'novověk', name: { cs: 'Novověk', en: 'Modern era' }, span: { cs: 'až do dneška', en: 'up to today' } },
+];
+function vizTimeline(active) {
+    const cs = lang === 'cs';
+    let h = '<div class="viz"><div class="timeline">';
+    h += `<div class="tl-mark top" style="left:30%">≈ 3000 ${cs ? 'př. n. l.' : 'BC'}</div>`;
+    h += `<div class="tl-mark top" style="left:77%">1492</div>`;
+    h += `<div class="tl-mark top" style="left:100%;transform:translateX(-100%)">${cs ? 'dnes' : 'today'}</div>`;
+    h += '<div class="tl-bar">';
+    PERIODS.forEach(p => {
+        const dim = !(active === 'all' || active === p.k || (active === 'grade' && (p.k === 'pre' || p.k === 'anc')));
+        h += `<div class="tl-seg${dim ? ' dim' : ''}" style="--c:var(${p.c});width:${p.w}%"><b>${L(p.name)}</b><span>${lang === 'en' ? p.cz + ' · ' : ''}${L(p.span)}</span></div>`;
+    });
+    h += '</div>';
+    h += `<div class="tl-mark bottom" style="left:54%">476 ${cs ? 'n. l.' : 'AD'}</div>`;
+    if (active === 'grade') h += `<div class="tl-grade" style="width:54%">👉 ${cs ? '6. třída' : 'Year 6'}</div>`;
+    h += `</div><div class="tl-note">${t('notToScale')}</div></div>`;
+    return h;
+}
+
+const THEORIES = [
+    { k: 'cre', c: '--accent2', ico: '📖', cz: 'teorie stvoření', name: { cs: 'Teorie stvoření', en: 'Creation theory' },
+      what: { cs: 'Člověka stvořil Bůh. Vychází z Bible (křesťané).', en: 'God created humans. Based on the Bible (Christians).' } },
+    { k: 'evo', c: '--green', ico: '🧬', cz: 'evoluční (vývojová) teorie', name: { cs: 'Evoluční (vývojová) teorie', en: 'Theory of evolution' },
+      what: { cs: 'Charles Darwin. Člověk a opice mají společného předka. Přirozený výběr.', en: 'Charles Darwin. Humans and apes have a common ancestor. Natural selection.' } },
+    { k: 'id', c: '--purple', ico: '💡', cz: 'teorie inteligentního plánu', name: { cs: 'Teorie inteligentního plánu', en: 'Intelligent design' },
+      what: { cs: 'Stvořitelem světa je nějaká vyšší inteligentní síla (není to bůh).', en: 'The creator of the world is some higher intelligent force (not God).' } },
+];
+function vizTheories(active) {
+    let h = '<div class="viz"><div class="cols3">';
+    THEORIES.forEach(th => {
+        const cls = active === 'all' ? '' : (active === th.k ? 'on' : 'dim');
+        h += `<div class="col-card ${cls}" style="--c:var(${th.c})"><div class="ico">${th.ico}</div><h4>${L(th.name)}${czTag(th.cz)}</h4>
+              <div class="detail"><div class="what">${L(th.what)}</div></div></div>`;
+    });
+    return h + '</div></div>';
+}
+
+const DAYS = [['💡', 'světlo', 'light'], ['☁️', 'nebe', 'sky'], ['🌍🌱', 'souš, moře, rostliny', 'land, sea, plants'],
+    ['☀️🌙', 'Slunce, Měsíc, hvězdy', 'sun, moon, stars'], ['🐟🐦', 'ryby a ptáci', 'fish and birds'],
+    ['🐄🧍', 'zvířata a člověk', 'animals and humans'], ['😴', 'odpočinek', 'rest']];
+function vizDays() {
+    const cs = lang === 'cs';
+    let h = '<div class="viz"><div class="days">';
+    DAYS.forEach((d, i) => {
+        h += `<div class="day${i === 5 ? ' on' : ''}"><div class="n">${cs ? (i + 1) + '. den' : 'Day ' + (i + 1)}</div><div class="ico">${d[0]}</div><div class="txt">${cs ? d[1] : d[2]}</div></div>`;
+    });
+    return h + `</div><div class="viz-cap">${cs ? 'Stvoření světa podle Bible – 6. den Bůh stvořil člověka' : 'Creation of the world according to the Bible – on day 6 God created humans'}</div></div>`;
+}
+
+function vizTree() {
+    const cs = lang === 'cs';
+    let s = `<svg viewBox="0 0 380 275" width="380" height="275" xmlns="http://www.w3.org/2000/svg" role="img">`;
+    s += `<line x1="22" y1="255" x2="22" y2="36" style="stroke:var(--muted);stroke-width:2.5"/>`;
+    s += `<polygon points="15,40 22,24 29,40" style="fill:var(--muted)"/>`;
+    s += `<text x="34" y="30" class="svg-small" style="fill:var(--muted);font-size:12px">${cs ? 'dnes' : 'today'}</text>`;
+    s += `<text x="12" y="150" text-anchor="middle" class="svg-small" style="fill:var(--muted);font-size:12px" transform="rotate(-90 12 150)">${cs ? 'miliony let' : 'millions of years'}</text>`;
+    const br = 'fill:none;stroke-width:6;stroke-linecap:round';
+    s += `<path d="M210 222 L210 192" style="${br};stroke:var(--green)"/>`;
+    s += `<path d="M210 192 C 160 170, 90 140, 80 92" style="${br};stroke:var(--green)"/>`;
+    s += `<path d="M210 192 C 215 170, 225 160, 228 148" style="${br};stroke:var(--green)"/>`;
+    s += `<path d="M228 148 C 215 125, 190 110, 182 92" style="${br};stroke:var(--green)"/>`;
+    s += `<path d="M228 148 C 250 125, 300 110, 310 92" style="${br};stroke:var(--accent)"/>`;
+    s += `<circle cx="210" cy="232" r="16" style="fill:var(--accent2);stroke:var(--paper);stroke-width:3"/>`;
+    s += `<text x="210" y="239" text-anchor="middle" style="font-size:16px">🐾</text>`;
+    s += `<text x="236" y="238" class="svg-label" style="fill:var(--accent);font-size:14px">${cs ? 'společný předek' : 'common ancestor'}</text>`;
+    [[80, '🦍', cs ? 'gorila' : 'gorilla'], [182, '🐒', cs ? 'šimpanz' : 'chimp'], [310, '🧍', cs ? 'člověk' : 'human']].forEach(([x, e, n]) => {
+        s += `<text x="${x}" y="52" text-anchor="middle" style="font-size:28px">${e}</text>`;
+        s += `<text x="${x}" y="78" text-anchor="middle" class="svg-label" style="fill:var(--text);font-size:14px">${n}</text>`;
+    });
+    s += `</svg>`;
+    return `<div class="viz">${s}<div class="viz-cap">${cs ? 'Člověk nevznikl z dnešní opice – máme s opicemi společného předka' : 'Humans did not come from today\'s apes – we share a common ancestor with them'}</div></div>`;
+}
+
+function beetlePanel(colors, bird) {
+    const pos = [[28, 30], [62, 22], [98, 34], [40, 62], [80, 58], [112, 70], [20, 84], [64, 86]];
+    let s = `<svg viewBox="0 0 140 105" width="140" height="105" xmlns="http://www.w3.org/2000/svg">`;
+    s += `<rect x="2" y="2" width="136" height="101" rx="14" style="fill:#8cc06a"/>`;
+    colors.forEach((c, i) => {
+        const [x, y] = pos[i];
+        const fill = c === 'g' ? '#5f9a3c' : '#7a4a22';
+        s += `<ellipse cx="${x}" cy="${y}" rx="9" ry="6.5" style="fill:${fill}"/><circle cx="${x + 9}" cy="${y}" r="3.2" style="fill:${fill}"/>`;
+        if (bird && c === 'b') s += `<path d="M${x - 8} ${y - 8} L${x + 8} ${y + 8} M${x + 8} ${y - 8} L${x - 8} ${y + 8}" style="stroke:#d45b5b;stroke-width:3;stroke-linecap:round"/>`;
+    });
+    if (bird) s += `<text x="118" y="28" text-anchor="middle" style="font-size:24px">🐦</text>`;
+    return s + '</svg>';
+}
+function vizSelection() {
+    const cs = lang === 'cs';
+    const caps = cs
+        ? ['1. generace: zelení i hnědí brouci', 'Pták na zeleném listu vidí hlavně hnědé – a sní je', 'O pár generací později: skoro všichni zelení']
+        : ['Generation 1: green and brown beetles', 'On a green leaf the bird spots the brown ones – and eats them', 'A few generations later: almost all green'];
+    const g1 = ['g', 'b', 'g', 'b', 'g', 'b', 'g', 'b'];
+    const g3 = ['g', 'g', 'g', 'g', 'b', 'g', 'g', 'g'];
+    return `<div class="viz"><div class="panels">
+        <div class="panel">${beetlePanel(g1, false)}<div class="cap">${caps[0]}</div></div><div class="arrow">→</div>
+        <div class="panel">${beetlePanel(g1, true)}<div class="cap">${caps[1]}</div></div><div class="arrow">→</div>
+        <div class="panel">${beetlePanel(g3, false)}<div class="cap">${caps[2]}</div></div>
+    </div></div>`;
+}
+
+function rowsViz(rows) {
+    return '<div class="viz"><div class="rows">' + rows.map(r =>
+        `<div class="row-item"><div class="ico">${r.ico}</div><div class="name">${r.name}${r.small ? `<small>${r.small}</small>` : ''}</div>${r.badge ? `<span class="badge-type" style="--c:var(${r.c})">${r.badge}</span>` : '<span></span>'}</div>`).join('') + '</div></div>';
+}
+function vizExperts() {
+    const cs = lang === 'cs';
+    return rowsViz([
+        { ico: '⛏️', name: cs ? 'archeolog' : 'archaeologist', small: cs ? 'hledá a zkoumá předměty v zemi' : 'finds and studies objects in the ground' },
+        { ico: '🧪', name: cs ? 'chemik a fyzik' : 'chemist and physicist', small: cs ? 'pomůžou zjistit, jak je věc stará' : 'help find out how old something is' },
+        { ico: '🦴', name: cs ? 'antropolog' : 'anthropologist', small: cs ? 'zkoumá kosti a pozůstatky lidí' : 'studies human bones and remains' },
+        { ico: '🔤', name: cs ? 'jazykovědec' : 'linguist', small: cs ? 'přečte a přeloží staré písmo' : 'reads and translates old writing' },
+        { ico: '🖌️', name: cs ? 'restaurátor' : 'restorer', small: cs ? 'opraví poškozené obrazy a předměty' : 'repairs damaged paintings and objects' },
+        { ico: '🧭', name: cs ? 'historik' : 'historian', small: cs ? 'všechno spojí do celkového obrazu' : 'puts it all together into one picture' },
+    ]);
+}
+function vizTricky() {
+    const cs = lang === 'cs';
+    const cat = k => ({ w: ['--c-w', t('catName').w], m: ['--c-m', t('catName').m], p: ['--c-p', t('catName').p] }[k]);
+    const rows = [
+        ['🪨', cs ? 'nápis vytesaný do kamene' : 'an inscription carved in stone', cs ? 'je na něm písmo' : 'it has writing on it', 'w'],
+        ['🗺️', cs ? 'mapa' : 'a map', cs ? 'zobrazuje krajinu' : 'it shows a landscape', 'p'],
+        ['🗿', cs ? 'socha' : 'a statue', cs ? 'dá se zkoumat i jako hmotný' : 'can also be studied as material', 'p'],
+        ['📖', 'Bible', cs ? 'je to kniha' : 'it is a book', 'w'],
+        ['🖼️', 'Mona Lisa', cs ? 'je to obraz' : 'it is a painting', 'p'],
+        ['🪙', cs ? 'mince' : 'a coin', cs ? 'je to předmět' : 'it is an object', 'm'],
+    ];
+    return rowsViz(rows.map(([ico, name, small, k]) => ({ ico, name, small, badge: cat(k)[1], c: cat(k)[0] })));
+}
+
+function vizVideos(list) {
+    return '<div class="videos">' + list.map(v =>
+        `<a class="video-link" href="https://www.youtube.com/watch?v=${v.id}${v.t ? '&t=' + v.t + 's' : ''}" target="_blank" rel="noopener">
+           <span class="play">${t('watch')}</span><span class="vt">${L(v.title)}<small>${t('video')}${v.note ? ' · ' + L(v.note) : ''}</small></span></a>`).join('') + '</div>';
+}
+
+function sumRows(rows) {
+    return '<div class="sum">' + rows.map(([ico, html]) => `<div class="sum-row"><div class="ico">${ico}</div><div>${html}</div></div>`).join('') + '</div>';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LESSONS – TAB 1: HISTORICAL SOURCES (Historické prameny)
+// ═══════════════════════════════════════════════════════════════
+const SRC_LESSONS = [
+{
+    name: { cs: 'a) Tři druhy pramenů', en: 'a) Three kinds of sources' },
+    q: { cs: 'Jak poznáváme historii?', en: 'How do we learn about history?' },
+    steps: [
+        { title: { cs: 'Co je historický pramen?', en: 'What is a historical source?' },
+          speech: { cs: 'Ahoj! Dnes zjistíme, odkud vlastně víme, co se stalo dávno před námi 🦫', en: 'Hi! Today we find out how we actually know what happened long before us 🦫' },
+          body: {
+            cs: `<p><span class="hl-accent">Historické prameny</span> jsou zdroje, ze kterých vědci získávají informace o minulosti lidstva.</p>
+                 <p class="must">Jednoduše: pramen je <strong>vše, co po předcích zbylo</strong> – kniha, hrnec, meč, obraz, fotka…</p>
+                 <p>Prameny dělíme na <span class="hl-accent">3 druhy</span>: <span class="hl-blue">písemné</span>, <span class="hl-accent">hmotné</span> a <span class="hl-purple">obrazové</span>.</p>`,
+            en: `<p><span class="hl-accent">Historical sources</span> <span class="cz">(historické prameny)</span> are what scientists use to get information about the human past.</p>
+                 <p class="must">Put simply: a source is <strong>anything our ancestors left behind</strong> – a book, a pot, a sword, a painting, a photo…</p>
+                 <p>There are <span class="hl-accent">3 kinds</span>: <span class="hl-blue">written</span> <span class="cz">(písemné)</span>, <span class="hl-accent">material</span> <span class="cz">(hmotné)</span> and <span class="hl-purple">pictorial</span> <span class="cz">(obrazové)</span>.</p>` },
+          viz: () => vizSources('intro') },
+        { title: { cs: '1. Písemné prameny', en: '1. Written sources (písemné)' },
+          speech: { cs: 'Všechno, kde je něco napsáno 📜', en: 'Anything with writing on it 📜' },
+          body: {
+            cs: `<p>Jsou to <strong>všechny dochované písemné památky</strong>, např. <em>knihy, listiny, vyryté nápisy, smlouvy…</em></p>
+                 <p>🔍 Zkoumá se jejich <span class="hl-blue">obsah</span> (co v nich je napsáno) a <span class="hl-blue">doba, kdy vznikly</span>.</p>
+                 <p class="must">Uchovávají se v <span class="hl-accent">knihovnách</span> (hlavně tištěné prameny) a v <span class="hl-accent">archivech</span> (převážně ručně psané).</p>`,
+            en: `<p>These are <strong>all surviving written records</strong>, e.g. <em>books, charters, carved inscriptions, treaties…</em></p>
+                 <p>🔍 We study their <span class="hl-blue">content</span> (what is written) and <span class="hl-blue">when they were made</span>.</p>
+                 <p class="must">They are kept in <span class="hl-accent">libraries</span> <span class="cz">(knihovny)</span> – mostly printed ones – and in <span class="hl-accent">archives</span> <span class="cz">(archivy)</span> – mostly handwritten ones.</p>` },
+          viz: () => vizSources('w') },
+        { title: { cs: '2. Hmotné prameny', en: '2. Material sources (hmotné)' },
+          speech: { cs: 'Věci, které si můžeš vzít do ruky 🏺', en: 'Things you can hold in your hand 🏺' },
+          body: {
+            cs: `<p>Jsou to hlavně <strong>předměty a nástroje</strong>, např. <em>zbraně, nádobí, nářadí…</em></p>
+                 <p>🔍 Zkoumá se, <span class="hl-blue">k čemu sloužily</span>, <span class="hl-blue">jak a z čeho byly vyrobeny</span>, <span class="hl-blue">jak jsou staré</span> a <span class="hl-blue">odkud pocházejí</span>.</p>
+                 <p class="must">Nejčastěji se uchovávají v <span class="hl-accent">muzeu</span> – buď jsou přímo vystavené (v <span class="hl-accent">expozici</span>), nebo uložené ve skladu (v <span class="hl-accent">depozitáři</span>).</p>
+                 <p class="must">Věda, která zkoumá hmotné prameny, se jmenuje <span class="hl-green">archeologie</span>. Pro <strong>nejstarší období dějin</strong> jsou hmotné prameny <strong>jediným zdrojem informací</strong>.</p>`,
+            en: `<p>These are mainly <strong>objects and tools</strong>, e.g. <em>weapons, dishes, tools…</em></p>
+                 <p>🔍 We study <span class="hl-blue">what they were for</span>, <span class="hl-blue">how and from what they were made</span>, <span class="hl-blue">how old they are</span> and <span class="hl-blue">where they come from</span>.</p>
+                 <p class="must">They are usually kept in a <span class="hl-accent">museum</span> <span class="cz">(muzeum)</span> – either on display (in the <span class="hl-accent">expozice</span>) or in storage (in the <span class="hl-accent">depozitář</span>).</p>
+                 <p class="must">The science that studies material sources is <span class="hl-green">archaeology</span> <span class="cz">(archeologie)</span>. For the <strong>oldest period of history</strong>, material sources are the <strong>only source of information</strong>.</p>` },
+          viz: () => vizSources('m') },
+        { title: { cs: '3. Obrazové prameny', en: '3. Pictorial sources (obrazové)' },
+          speech: { cs: 'Všechno, co něco zobrazuje 🖼️', en: 'Anything that shows a picture of something 🖼️' },
+          body: {
+            cs: `<p>Jsou to většinou <strong>umělecké předměty</strong>, např. <em>obrazy, sochy, fotografie, filmy</em> a také <em>mapy</em>.</p>
+                 <p>🔍 Zkoumáme, <span class="hl-blue">co</span> daný předmět znázorňuje, <span class="hl-blue">jak</span> a <span class="hl-blue">proč</span>. (Můžeme je zkoumat i jako prameny hmotné – třeba z čeho je socha.)</p>
+                 <p class="must">Uchovávají se a vystavují v <span class="hl-accent">galeriích</span>.</p>`,
+            en: `<p>These are mostly <strong>works of art</strong>, e.g. <em>paintings, statues, photos, films</em> and also <em>maps</em>.</p>
+                 <p>🔍 We study <span class="hl-blue">what</span> it shows, <span class="hl-blue">how</span> and <span class="hl-blue">why</span>. (They can also be studied as material sources – e.g. what a statue is made of.)</p>
+                 <p class="must">They are kept and shown in <span class="hl-accent">galleries</span> <span class="cz">(galerie)</span>.</p>` },
+          viz: () => vizSources('p') },
+        { title: { cs: 'Pozor na chytáky!', en: 'Watch out for tricky ones!' },
+          speech: { cs: 'Tyhle si kapybara dobře pamatuje 🧐', en: 'The capybara remembers these well 🧐' },
+          body: {
+            cs: `<p>Rozhoduj podle toho, <strong>co je na prameni nejdůležitější</strong>:</p>
+                 <ul><li>je tam <span class="hl-blue">písmo</span> → písemný (i když je vytesaný do kamene!)</li>
+                 <li>je to <span class="hl-accent">předmět</span>, který se používal → hmotný</li>
+                 <li>něco <span class="hl-purple">zobrazuje</span> → obrazový (i mapa!)</li></ul>`,
+            en: `<p>Decide by <strong>what matters most about the source</strong>:</p>
+                 <ul><li>it has <span class="hl-blue">writing</span> → written (even when carved into stone!)</li>
+                 <li>it is an <span class="hl-accent">object</span> people used → material</li>
+                 <li>it <span class="hl-purple">shows</span> something → pictorial (maps too!)</li></ul>` },
+          viz: () => vizTricky() },
+    ],
+    sumTitle: { cs: '3 druhy historických pramenů', en: '3 kinds of historical sources' },
+    sum: () => lang === 'cs' ? sumRows([
+        ['📜', '<b>Písemné</b> – knihy, listiny, vyryté nápisy, smlouvy → <b>knihovna</b> (tištěné) a <b>archiv</b> (ručně psané)'],
+        ['🏺', '<b>Hmotné</b> – zbraně, nádobí, nářadí → <b>muzeum</b> (expozice / depozitář). Zkoumá je <b>archeologie</b>.'],
+        ['🖼️', '<b>Obrazové</b> – obrazy, sochy, fotografie, filmy, mapy → <b>galerie</b>'],
+        ['❗', 'Pro nejstarší období dějin jsou hmotné prameny jediným zdrojem informací.'],
+    ]) : sumRows([
+        ['📜', '<b>Written</b> (písemné) – books, charters, carved inscriptions, treaties → <b>library</b> (printed) and <b>archive</b> (handwritten)'],
+        ['🏺', '<b>Material</b> (hmotné) – weapons, dishes, tools → <b>museum</b> (expozice / depozitář). Studied by <b>archaeology</b> (archeologie).'],
+        ['🖼️', '<b>Pictorial</b> (obrazové) – paintings, statues, photos, films, maps → <b>gallery</b> (galerie)'],
+        ['❗', 'For the oldest period of history, material sources are the only source of information.'],
+    ]),
+},
+{
+    name: { cs: 'b) Kde se prameny uchovávají', en: 'b) Where sources are kept' },
+    q: { cs: 'Knihovna, archiv, muzeum, nebo galerie?', en: 'Library, archive, museum or gallery?' },
+    steps: [
+        { title: { cs: 'Každý pramen má svůj domov', en: 'Every source has its home' },
+          speech: { cs: 'Tohle v testu chtěli u každé otázky! 🦫', en: 'The test asked about this in every question! 🦫' },
+          body: {
+            cs: `<p>Prameny jsou vzácné, a tak se o ně musí někdo starat, aby se nezničily.</p>
+                 <p class="must">Zapamatuj si 4 místa: <span class="hl-accent">knihovna</span>, <span class="hl-accent">archiv</span>, <span class="hl-accent">muzeum</span> a <span class="hl-accent">galerie</span>.</p>
+                 <p>V testu se ptali: <em>„Napiš 4 prameny. <strong>Kde tyto prameny uchováváme?</strong>"</em> – na druhou půlku otázky nezapomeň!</p>`,
+            en: `<p>Sources are precious, so someone has to look after them so they don't get destroyed.</p>
+                 <p class="must">Remember 4 places: <span class="hl-accent">library</span> <span class="cz">(knihovna)</span>, <span class="hl-accent">archive</span> <span class="cz">(archiv)</span>, <span class="hl-accent">museum</span> <span class="cz">(muzeum)</span> and <span class="hl-accent">gallery</span> <span class="cz">(galerie)</span>.</p>
+                 <p>The test asked: <em>"Name 4 sources. <strong>Where do we keep them?</strong>"</em> – don't forget the second half of the question!</p>` },
+          viz: () => vizPlaces('all') },
+        { title: { cs: 'Písemné → knihovna a archiv', en: 'Written → library and archive' },
+          body: {
+            cs: `<p>📚 <span class="hl-accent">Knihovna</span> – hlavně <strong>tištěné</strong> prameny: knihy, noviny, časopisy.</p>
+                 <p>🗄️ <span class="hl-accent">Archiv</span> – převážně <strong>ručně psané</strong> prameny: listiny, smlouvy, kroniky, dopisy.</p>`,
+            en: `<p>📚 <span class="hl-accent">Library</span> <span class="cz">(knihovna)</span> – mostly <strong>printed</strong> sources: books, newspapers, magazines.</p>
+                 <p>🗄️ <span class="hl-accent">Archive</span> <span class="cz">(archiv)</span> – mostly <strong>handwritten</strong> sources: charters, treaties, chronicles, letters.</p>` },
+          viz: () => vizPlaces('w') },
+        { title: { cs: 'Hmotné → muzeum', en: 'Material → museum' },
+          body: {
+            cs: `<p>🏛️ V <span class="hl-accent">muzeu</span> najdeš hmotné prameny: meče, hrnce, nástroje, šperky, mince…</p>
+                 <p>Muzeum má dvě důležité části. Podíváme se na ně v dalších krocích.</p>`,
+            en: `<p>🏛️ In a <span class="hl-accent">museum</span> <span class="cz">(muzeum)</span> you find material sources: swords, pots, tools, jewellery, coins…</p>
+                 <p>A museum has two important parts. We'll look at them in the next steps.</p>` },
+          viz: () => vizMuseum('both') },
+        { title: { cs: 'Expozice', en: 'Expozice (the exhibition)' },
+          speech: { cs: 'Expozice = to, co uvidíš 👀', en: 'Expozice = what you get to see 👀' },
+          body: {
+            cs: `<p class="must"><span class="hl-green">Expozice</span> = <strong>výstava</strong>. Je to část muzea, kde jsou předměty <strong>přímo vystavené</strong>, aby si je návštěvníci mohli prohlédnout.</p>`,
+            en: `<p class="must"><span class="hl-green">Expozice</span> = the <strong>exhibition</strong>. It is the part of the museum where objects are <strong>on display</strong> so visitors can look at them.</p>` },
+          viz: () => vizMuseum('expo') },
+        { title: { cs: 'Depozitář', en: 'Depozitář (the storage)' },
+          speech: { cs: 'Depozitář = sklad, kam se návštěvníci nedostanou 🔒', en: 'Depozitář = the storeroom visitors can\'t get into 🔒' },
+          body: {
+            cs: `<p class="must"><span class="hl-accent">Depozitář</span> = <strong>sklad muzea</strong>. Jsou v něm uložené předměty, které <span class="hl-red">nejsou vystavené</span>.</p>
+                 <p>Muzeum má mnohem víc věcí, než se vejde do expozice. V depozitáři jsou v bezpečí a odborníci je tu můžou zkoumat.</p>`,
+            en: `<p class="must"><span class="hl-accent">Depozitář</span> = the <strong>museum's storage</strong>. Objects that are <span class="hl-red">not on display</span> are kept there.</p>
+                 <p>A museum has many more things than fit in the exhibition. In the storage they are safe and experts can study them.</p>` },
+          viz: () => vizMuseum('depo') },
+        { title: { cs: 'Obrazové → galerie', en: 'Pictorial → gallery' },
+          body: {
+            cs: `<p>🖼️ V <span class="hl-accent">galerii</span> se uchovávají a vystavují obrazové prameny: obrazy, sochy, fotografie.</p>
+                 <p>Tip: <em>Mona Lisa, Dívka s perlou</em> – to jsou obrazy, takže je hledej v galerii (a odpověď „galerie" připiš do testu!).</p>`,
+            en: `<p>🖼️ A <span class="hl-accent">gallery</span> <span class="cz">(galerie)</span> keeps and shows pictorial sources: paintings, statues, photos.</p>
+                 <p>Tip: <em>Mona Lisa, Girl with a Pearl Earring</em> – these are paintings, so they belong in a gallery (and write "galerie" in the test!).</p>` },
+          viz: () => vizPlaces('gal') },
+    ],
+    sumTitle: { cs: 'Kde prameny uchováváme', en: 'Where we keep sources' },
+    sum: () => lang === 'cs' ? sumRows([
+        ['📚', '<b>Knihovna</b> – tištěné písemné prameny'],
+        ['🗄️', '<b>Archiv</b> – převážně ručně psané písemné prameny'],
+        ['🏛️', '<b>Muzeum</b> – hmotné prameny. <b>Expozice</b> = výstava (vystavené předměty). <b>Depozitář</b> = sklad (nevystavené předměty).'],
+        ['🖼️', '<b>Galerie</b> – obrazové prameny'],
+    ]) : sumRows([
+        ['📚', '<b>Library</b> (knihovna) – printed written sources'],
+        ['🗄️', '<b>Archive</b> (archiv) – mostly handwritten written sources'],
+        ['🏛️', '<b>Museum</b> (muzeum) – material sources. <b>Expozice</b> = exhibition (on display). <b>Depozitář</b> = storage (not on display).'],
+        ['🖼️', '<b>Gallery</b> (galerie) – pictorial sources'],
+    ]),
+},
+{
+    name: { cs: 'c) Archeolog a historik', en: 'c) Archaeologist and historian' },
+    q: { cs: 'Kdo skládá obraz minulosti?', en: 'Who puts together the picture of the past?' },
+    steps: [
+        { title: { cs: 'Archeologie', en: 'Archaeology (archeologie)' },
+          speech: { cs: 'Kapybara taky ráda kope v bahně 🦫⛏️', en: 'The capybara loves digging in the mud too 🦫⛏️' },
+          body: {
+            cs: `<p class="must"><span class="hl-green">Archeologie</span> je věda, která zkoumá <strong>hmotné prameny</strong>. Archeologové hledají předměty v zemi (při vykopávkách) a zjišťují, jak jsou staré.</p>
+                 <p>Čím hlouběji v zemi předmět leží, tím bývá obvykle starší.</p>
+                 <p class="must">Pro <strong>nejstarší období dějin</strong> (pravěk) jsou hmotné prameny <span class="hl-red">jediným zdrojem informací</span> – lidé tehdy ještě neuměli psát.</p>`,
+            en: `<p class="must"><span class="hl-green">Archaeology</span> <span class="cz">(archeologie)</span> is the science that studies <strong>material sources</strong>. Archaeologists look for objects in the ground (on excavations) and find out how old they are.</p>
+                 <p>The deeper an object lies, the older it usually is.</p>
+                 <p class="must">For the <strong>oldest period of history</strong> (prehistory, <span class="cz">pravěk</span>), material sources are the <span class="hl-red">only source of information</span> – people could not write yet.</p>` },
+          viz: () => vizDig() },
+        { title: { cs: 'Pomáhá mnoho vědců', en: 'Many scientists help' },
+          body: {
+            cs: `<p class="must">Zpracovávat prameny pomáhají <strong>vědci mnoha oborů</strong>.</p><p>Každý umí něco jiného:</p>`,
+            en: `<p class="must">Scientists from <strong>many fields</strong> help to work with sources.</p><p>Each of them is good at something different:</p>` },
+          viz: () => vizExperts() },
+        { title: { cs: 'Úkol historika', en: 'The historian\'s job' },
+          speech: { cs: 'Historie je jako velké puzzle 🧩', en: 'History is like a big jigsaw puzzle 🧩' },
+          body: {
+            cs: `<p class="must"><span class="hl-accent">Úkolem historika</span> je z dílčích informací (z mnoha malých kousků) <strong>sestavit celkový obraz určitého období</strong>.</p>
+                 <p>Je to jako skládat puzzle: každý pramen je jeden dílek.</p>`,
+            en: `<p class="must"><span class="hl-accent">The historian's job</span> is to take partial information (many small pieces) and <strong>put together a whole picture of a period</strong>.</p>
+                 <p>It's like a jigsaw puzzle: every source is one piece.</p>` },
+          viz: () => vizPuzzle('build') },
+        { title: { cs: 'Obraz minulosti není nikdy hotový', en: 'The picture is never finished' },
+          body: {
+            cs: `<p>Tento obraz je ale <span class="hl-red">nestálý a neúplný</span>, protože:</p>
+                 <ul><li>stále se nalézají <strong>nové zdroje informací</strong> (nové prameny),</li>
+                 <li>zlepšují se <strong>technologie zkoumání</strong>,</li>
+                 <li>může se měnit <strong>názor na výklad dějin</strong>.</li></ul>`,
+            en: `<p>But this picture is <span class="hl-red">changing and incomplete</span>, because:</p>
+                 <ul><li><strong>new sources of information</strong> keep being found,</li>
+                 <li><strong>research technology</strong> keeps getting better,</li>
+                 <li><strong>opinions on how to explain history</strong> can change.</li></ul>` },
+          viz: () => vizPuzzle('gaps') },
+    ],
+    sumTitle: { cs: 'Archeolog a historik', en: 'Archaeologist and historian' },
+    sum: () => lang === 'cs' ? sumRows([
+        ['⛏️', '<b>Archeologie</b> = věda, která zkoumá hmotné prameny.'],
+        ['🦴', 'Pro nejstarší období (pravěk) jsou hmotné prameny jediným zdrojem informací.'],
+        ['🧩', '<b>Úkol historika</b>: z dílčích informací sestavit celkový obraz určitého období.'],
+        ['🔍', 'Obraz je <b>nestálý a neúplný</b> – nové prameny, lepší technologie, jiný výklad.'],
+    ]) : sumRows([
+        ['⛏️', '<b>Archaeology</b> (archeologie) = the science that studies material sources.'],
+        ['🦴', 'For the oldest period (prehistory) material sources are the only source of information.'],
+        ['🧩', '<b>The historian\'s job</b>: put partial information together into a whole picture of a period.'],
+        ['🔍', 'The picture is <b>changing and incomplete</b> – new sources, better technology, new explanations.'],
+    ]),
+},
+];
+
+// ═══════════════════════════════════════════════════════════════
+// LESSONS – TAB 2: HISTORY & TIME (Dějepis a čas)
+// ═══════════════════════════════════════════════════════════════
+const TIME_LESSONS = [
+{
+    name: { cs: 'a) Co je dějepis?', en: 'a) What is history?' },
+    q: { cs: 'Minulost, historie a úkol dějepisu', en: 'The past, history and what history is for' },
+    steps: [
+        { title: { cs: 'Minulost × historie', en: 'The past × history' },
+          speech: { cs: 'Vypadá to stejně, ale není to totéž 🦫', en: 'They sound the same, but they\'re not 🦫' },
+          body: {
+            cs: `<p><span class="hl-accent">Minulost</span> je <strong>všechno, co se už stalo</strong> – i to, o čem nic nevíme.</p>
+                 <p><span class="hl-green">Historie (dějiny)</span> je ta část minulosti, kterou <strong>známe a zkoumáme díky pramenům</strong>. Slovem historie se říká i <strong>vědě</strong>, která minulost zkoumá.</p>
+                 <p class="must">Minulost = vše, co se stalo. Historie = to, co z minulosti poznáváme z pramenů (a věda, která ji zkoumá).</p>`,
+            en: `<p><span class="hl-accent">The past</span> <span class="cz">(minulost)</span> is <strong>everything that has already happened</strong> – even the things we know nothing about.</p>
+                 <p><span class="hl-green">History</span> <span class="cz">(historie, dějiny)</span> is the part of the past that we <strong>know and study thanks to sources</strong>. "History" is also the name of the <strong>science</strong> that studies the past.</p>
+                 <p class="must">The past = everything that happened. History = what we learn about the past from sources (and the science that studies it).</p>` },
+          viz: () => vizVenn() },
+        { title: { cs: 'Úkol dějepisu', en: 'What history is for' },
+          body: {
+            cs: `<p class="must">Dějepis <strong>zkoumá minulost lidské společnosti</strong> pomocí historických pramenů.</p>
+                 <p>Hledá, <span class="hl-blue">co</span> se stalo, <span class="hl-blue">kdy</span>, <span class="hl-blue">kde</span>, <span class="hl-blue">proč</span> se to stalo (příčiny) a <span class="hl-blue">co z toho vzniklo</span> (důsledky). Z dílčích informací skládá <strong>celkový obraz</strong> určitého období.</p>
+                 <p>Díky tomu lépe rozumíme dnešnímu světu a můžeme se z minulosti <strong>poučit</strong>.</p>
+                 <p>💡 V testu nestačí napsat jen „abychom věděli, co se stalo v minulosti". Přidej <strong>prameny</strong> a <strong>příčiny a důsledky</strong>!</p>`,
+            en: `<p class="must">History <strong>studies the past of human society</strong> using historical sources.</p>
+                 <p>It looks for <span class="hl-blue">what</span> happened, <span class="hl-blue">when</span>, <span class="hl-blue">where</span>, <span class="hl-blue">why</span> it happened (causes) and <span class="hl-blue">what came of it</span> (consequences). From partial information it builds a <strong>whole picture</strong> of a period.</p>
+                 <p>That helps us understand today's world and <strong>learn from</strong> the past.</p>
+                 <p>💡 In the test, "so we know what happened in the past" is not enough. Add <strong>sources</strong> and <strong>causes and consequences</strong>!</p>` },
+          viz: () => vizQuestions() },
+        { title: { cs: 'Příčina → událost → důsledek', en: 'Cause → event → consequence' },
+          speech: { cs: 'Tohle máš napsané hned nahoře v sešitě ✏️', en: 'This is written right at the top of your notebook ✏️' },
+          body: {
+            cs: `<p>Na začátku sešitu máš: <span class="formula">příčina → událost → důsledek</span></p>
+                 <p>Každá událost má <span class="hl-blue">příčinu</span> (proč se stala) a <span class="hl-green">důsledek</span> (co způsobila). Dějepis hledá právě tyto souvislosti.</p>`,
+            en: `<p>At the top of the notebook: <span class="formula">příčina → událost → důsledek</span> (cause → event → consequence)</p>
+                 <p>Every event has a <span class="hl-blue">cause</span> (why it happened) and a <span class="hl-green">consequence</span> (what it led to). History looks for exactly these connections.</p>` },
+          viz: () => vizChain() },
+    ],
+    sumTitle: { cs: 'Co je dějepis', en: 'What history is' },
+    sum: () => lang === 'cs' ? sumRows([
+        ['🌫️', '<b>Minulost</b> = všechno, co se stalo (i to, o čem nevíme).'],
+        ['📜', '<b>Historie (dějiny)</b> = to, co z minulosti poznáváme pomocí pramenů; také věda, která minulost zkoumá.'],
+        ['🔎', '<b>Úkol dějepisu</b>: zkoumat minulost lidí pomocí pramenů, hledat příčiny a důsledky a sestavit obraz období.'],
+        ['➡️', '<b>příčina → událost → důsledek</b>'],
+    ]) : sumRows([
+        ['🌫️', '<b>The past</b> (minulost) = everything that happened (even what we don\'t know about).'],
+        ['📜', '<b>History</b> (historie, dějiny) = what we learn about the past from sources; also the science that studies the past.'],
+        ['🔎', '<b>What history does</b>: studies people\'s past using sources, looks for causes and consequences and builds a picture of a period.'],
+        ['➡️', '<b>cause → event → consequence</b> (příčina → událost → důsledek)'],
+    ]),
+},
+{
+    name: { cs: 'b) Jak chápeme čas', en: 'b) How we understand time' },
+    q: { cs: 'Lineární, nebo cyklický čas?', en: 'Linear or cyclical time?' },
+    steps: [
+        { title: { cs: 'Lineární chápání času', en: 'Linear time (lineární)' },
+          speech: { cs: 'Lineární = jako čára (linie) 📏', en: 'Linear = like a line 📏' },
+          body: {
+            cs: `<p class="must">Když čas počítáme <strong>od pevného počátku</strong> a plyne jedním směrem jako přímka, říkáme tomu <span class="hl-accent">lineární chápání času</span>.</p>
+                 <p>Pevný počátek může být třeba:</p>
+                 <ul><li>⭐ <strong>narození Krista</strong> – tak počítáme roky my (náš letopočet),</li>
+                 <li>🏛️ <strong>založení Říma</strong> – tak počítali staří Římané,</li>
+                 <li>👑 <strong>nástup nového panovníka</strong> – „v pátém roce vlády krále…"</li></ul>`,
+            en: `<p class="must">When we count time <strong>from a fixed starting point</strong> and it runs in one direction like a line, we call it the <span class="hl-accent">linear understanding of time</span> <span class="cz">(lineární chápání času)</span>.</p>
+                 <p>The fixed starting point can be:</p>
+                 <ul><li>⭐ <strong>the birth of Christ</strong> – how we count years today,</li>
+                 <li>🏛️ <strong>the founding of Rome</strong> – how the ancient Romans counted,</li>
+                 <li>👑 <strong>a new ruler coming to the throne</strong> – "in the fifth year of the king's reign…"</li></ul>` },
+          viz: () => vizLinear() },
+        { title: { cs: 'Cyklické chápání času', en: 'Cyclical time (cyklické)' },
+          speech: { cs: 'Cyklické = jako kruh, pořád dokola 🔄', en: 'Cyclical = like a circle, round and round 🔄' },
+          body: {
+            cs: `<p class="must">Druhé chápání je <span class="hl-green">cyklické</span>: čas se <strong>opakuje dokola</strong>, jako v kruhu.</p>
+                 <p>Příklady: roční období 🌱 jaro → ☀️ léto → 🍂 podzim → ❄️ zima → a znovu jaro; den a noc; fáze Měsíce.</p>
+                 <p>Takhle čas vnímali hlavně dávní zemědělci – řídili se přírodou a ročními obdobími.</p>`,
+            en: `<p class="must">The second way is <span class="hl-green">cyclical</span> <span class="cz">(cyklické)</span>: time <strong>repeats over and over</strong>, like a circle.</p>
+                 <p>Examples: the seasons 🌱 spring → ☀️ summer → 🍂 autumn → ❄️ winter → and spring again; day and night; the phases of the Moon.</p>
+                 <p>Early farmers saw time like this – their lives followed nature and the seasons.</p>` },
+          viz: () => vizCycle() },
+        { title: { cs: 'Náš letopočet', en: 'Our calendar (letopočet)' },
+          body: {
+            cs: `<p>My počítáme roky od <span class="hl-accent">narození Krista</span>.</p>
+                 <p>Roky <strong>před</strong> ním značíme <span class="hl-red">př. n. l.</span> (před naším letopočtem). Počítají se <strong>pozpátku</strong>: rok 300 př. n. l. je starší než rok 100 př. n. l.</p>
+                 <p>Roky <strong>po</strong> něm značíme <span class="hl-green">n. l.</span> (našeho letopočtu). Rok 0 neexistuje – po roce 1 př. n. l. hned následuje rok 1 n. l.</p>`,
+            en: `<p>We count years from the <span class="hl-accent">birth of Christ</span>.</p>
+                 <p>Years <strong>before</strong> it are marked <span class="hl-red">př. n. l.</span> (BC). They count <strong>backwards</strong>: 300 BC is older than 100 BC.</p>
+                 <p>Years <strong>after</strong> it are marked <span class="hl-green">n. l.</span> (AD). There is no year 0 – 1 BC is followed straight by AD 1.</p>` },
+          viz: () => vizEra() },
+    ],
+    sumTitle: { cs: 'Dvě chápání času', en: 'Two ways to understand time' },
+    sum: () => lang === 'cs' ? sumRows([
+        ['📏', '<b>Lineární</b> – čas počítáme od pevného počátku (narození Krista, založení Říma, nový panovník) a plyne jedním směrem.'],
+        ['🔄', '<b>Cyklické</b> – čas se opakuje dokola (jaro → léto → podzim → zima, den a noc).'],
+        ['⭐', '<b>př. n. l.</b> = před naším letopočtem (počítá se pozpátku), <b>n. l.</b> = našeho letopočtu.'],
+    ]) : sumRows([
+        ['📏', '<b>Linear</b> (lineární) – time is counted from a fixed start (birth of Christ, founding of Rome, a new ruler) and runs one way.'],
+        ['🔄', '<b>Cyclical</b> (cyklické) – time repeats over and over (spring → summer → autumn → winter, day and night).'],
+        ['⭐', '<b>př. n. l.</b> = BC (counts backwards), <b>n. l.</b> = AD.'],
+    ]),
+},
+{
+    name: { cs: 'c) Období dějin', en: 'c) Periods of history' },
+    q: { cs: 'Pravěk, starověk, středověk, novověk', en: 'Prehistory, antiquity, Middle Ages, modern era' },
+    steps: [
+        { title: { cs: 'Čtyři velká období', en: 'Four big periods' },
+          speech: { cs: 'Dějiny jsou dlouhé – tak si je rozdělíme na kousky 🦫', en: 'History is long – so we cut it into pieces 🦫' },
+          body: {
+            cs: `<p>Dějiny lidstva dělíme na velká období:</p>
+                 <p><span class="hl-accent">pravěk</span> → <span class="hl-green">starověk</span> → <span class="hl-blue">středověk</span> → <span class="hl-purple">novověk</span></p>
+                 <p>Hranice mezi nimi tvoří důležité události: <strong>vznik písma</strong>, <strong>zánik Západořímské říše</strong> a <strong>objevení Ameriky</strong>.</p>`,
+            en: `<p>We divide human history into big periods:</p>
+                 <p><span class="hl-accent">prehistory</span> <span class="cz">(pravěk)</span> → <span class="hl-green">antiquity</span> <span class="cz">(starověk)</span> → <span class="hl-blue">Middle Ages</span> <span class="cz">(středověk)</span> → <span class="hl-purple">modern era</span> <span class="cz">(novověk)</span></p>
+                 <p>The borders between them are big events: <strong>the invention of writing</strong>, <strong>the fall of the Western Roman Empire</strong> and <strong>the discovery of America</strong>.</p>` },
+          viz: () => vizTimeline('all') },
+        { title: { cs: 'Pravěk', en: 'Prehistory (pravěk)' },
+          body: {
+            cs: `<p><span class="hl-accent">Pravěk</span> trvá od objevení prvních lidí (před více než 2 miliony let) až do <strong>vzniku písma</strong> (asi 3000 let př. n. l.).</p>
+                 <p class="must">Z pravěku nemáme písemné prameny – lidé ještě neuměli psát. Poznáváme ho z <strong>hmotných pramenů</strong> (nástroje, kosti, hroby, keramika), které zkoumá archeologie.</p>`,
+            en: `<p><span class="hl-accent">Prehistory</span> <span class="cz">(pravěk)</span> lasts from the first humans (more than 2 million years ago) until <strong>writing was invented</strong> (about 3000 BC).</p>
+                 <p class="must">There are no written sources from prehistory – people couldn't write yet. We know it from <strong>material sources</strong> (tools, bones, graves, pottery), studied by archaeology.</p>` },
+          viz: () => vizTimeline('pre') },
+        { title: { cs: 'Starověk', en: 'Antiquity (starověk)' },
+          body: {
+            cs: `<p><span class="hl-green">Starověk</span> začíná <strong>vznikem písma</strong> (asi 3000 let př. n. l.) a končí <strong>zánikem Západořímské říše</strong> v roce <strong>476 n. l.</strong></p>
+                 <p>Vznikají první státy a velká města: Mezopotámie, Egypt, Indie, Čína, Řecko a Řím.</p>`,
+            en: `<p><span class="hl-green">Antiquity</span> <span class="cz">(starověk)</span> starts with <strong>the invention of writing</strong> (about 3000 BC) and ends with <strong>the fall of the Western Roman Empire</strong> in <strong>AD 476</strong>.</p>
+                 <p>The first states and big cities appear: Mesopotamia, Egypt, India, China, Greece and Rome.</p>` },
+          viz: () => vizTimeline('anc') },
+        { title: { cs: 'Středověk a novověk', en: 'Middle Ages and modern era' },
+          speech: { cs: 'Tyhle dvě období tě čekají v dalších ročnících 🌾', en: 'These two periods come in later school years 🌾' },
+          body: {
+            cs: `<p><span class="hl-blue">Středověk</span>: od roku 476 do konce 15. století (objevení Ameriky 1492). Hrady, rytíři, Karel IV.</p>
+                 <p><span class="hl-purple">Novověk</span>: od konce 15. století až do dneška.</p>
+                 <p class="must">V <strong>6. třídě</strong> se učíme <span class="hl-accent">pravěk</span> a <span class="hl-green">starověk</span>. Středověk přijde na řadu později.</p>`,
+            en: `<p><span class="hl-blue">Middle Ages</span> <span class="cz">(středověk)</span>: from 476 to the end of the 15th century (discovery of America, 1492). Castles, knights, Charles IV.</p>
+                 <p><span class="hl-purple">Modern era</span> <span class="cz">(novověk)</span>: from the end of the 15th century until today.</p>
+                 <p class="must">In <strong>Year 6</strong> we learn <span class="hl-accent">prehistory</span> <span class="cz">(pravěk)</span> and <span class="hl-green">antiquity</span> <span class="cz">(starověk)</span>. The Middle Ages come later.</p>` },
+          viz: () => vizTimeline('grade') },
+    ],
+    sumTitle: { cs: 'Období dějin', en: 'Periods of history' },
+    sum: () => lang === 'cs' ? sumRows([
+        ['🦴', '<b>Pravěk</b> – od prvních lidí do vzniku písma (≈ 3000 př. n. l.). Jen hmotné prameny.'],
+        ['🏛️', '<b>Starověk</b> – od vzniku písma do zániku Západořímské říše (476 n. l.).'],
+        ['🏰', '<b>Středověk</b> – 476 až konec 15. století (1492).'],
+        ['🚂', '<b>Novověk</b> – od konce 15. století do dneška.'],
+        ['👉', 'V 6. třídě: <b>pravěk a starověk</b>.'],
+    ]) : sumRows([
+        ['🦴', '<b>Prehistory</b> (pravěk) – from the first humans to writing (≈ 3000 BC). Only material sources.'],
+        ['🏛️', '<b>Antiquity</b> (starověk) – from writing to the fall of the Western Roman Empire (AD 476).'],
+        ['🏰', '<b>Middle Ages</b> (středověk) – 476 to the end of the 15th century (1492).'],
+        ['🚂', '<b>Modern era</b> (novověk) – from the end of the 15th century to today.'],
+        ['👉', 'In Year 6: <b>prehistory and antiquity</b> (pravěk a starověk).'],
+    ]),
+},
+];
+
+// ═══════════════════════════════════════════════════════════════
+// LESSONS – TAB 3: ORIGIN OF HUMANS (Vznik člověka jako druhu)
+// ═══════════════════════════════════════════════════════════════
+const VIDEO_CREATION = { id: '2WR9RphXrog', title: { cs: 'Stvoření světa (z filmu Noe)', en: 'Creation of the world (from the film Noah)' } };
+const VIDEO_CHEETAH = { id: 'Ptpb51UquOo', title: { cs: 'Gepard – nejrychlejší zvíře', en: 'Cheetah – the fastest animal' } };
+const VIDEO_EVOLUTION = { id: 'Kueo99LlWDg', t: 132, title: { cs: 'O vývoji člověka – NEZkreslená věda', en: 'On human evolution – NEZkreslená věda' },
+                          note: { cs: 'stopáž 2:12 – 4:13', en: 'watch 2:12 – 4:13' } };
+
+const STEP_DARWIN = { title: { cs: 'Evoluční (vývojová) teorie', en: 'The theory of evolution (evoluční / vývojová)' },
+    speech: { cs: 'Evoluce = vývoj. Proto „vývojová" 🧬', en: 'Evolution = development. That\'s why Czech also says "vývojová" 🧬' },
+    body: {
+        cs: `<p class="must">Autorem <span class="hl-green">evoluční (vývojové) teorie</span> je <strong>Charles Darwin</strong> (anglický přírodovědec, kniha <em>O vzniku druhů</em>, 1859).</p>
+             <p class="must">Člověk a opice mají <strong>stejného vývojového předka</strong>. Člověk tedy nevznikl z dnešní opice – opice a člověk jsou jako vzdálení příbuzní.</p>
+             <p>Darwinova teorie v původní podobě je už přežitá. Dál ji rozpracovali další vědci, např. <strong>Richard Dawkins</strong>.</p>`,
+        en: `<p class="must">The author of the <span class="hl-green">theory of evolution</span> <span class="cz">(evoluční, vývojová teorie)</span> is <strong>Charles Darwin</strong> (an English naturalist; book <em>On the Origin of Species</em>, 1859).</p>
+             <p class="must">Humans and apes have <strong>the same evolutionary ancestor</strong>. So humans did not come from today's apes – apes and humans are like distant relatives.</p>
+             <p>Darwin's original version is out of date now. Other scientists developed it further, e.g. <strong>Richard Dawkins</strong>.</p>` },
+    viz: () => vizTree() };
+
+const STEP_SELECTION = { title: { cs: 'Přirozený výběr', en: 'Natural selection (přirozený výběr)' },
+    body: {
+        cs: `<p>Vývoj probíhá <strong>postupně</strong>, během milionů let. Uplatňuje se <span class="hl-green">přirozený výběr</span>:</p>
+             <p class="must">Přežije (a má potomky) ten <strong>nejsilnější a nejschopnější</strong>, <strong>nejatraktivnější</strong> – ten, kdo se nejlépe hodí do svého prostředí. Své vlastnosti pak předá potomkům.</p>
+             <p>Příklad: na zeleném listu pták snadno najde hnědé brouky, zelené přehlédne. Přežijí hlavně zelení – a za pár generací je skoro každý brouk zelený.</p>`,
+        en: `<p>Change happens <strong>gradually</strong>, over millions of years. <span class="hl-green">Natural selection</span> <span class="cz">(přirozený výběr)</span> is at work:</p>
+             <p class="must">The <strong>strongest and most capable</strong>, the <strong>most attractive</strong> – the one best suited to its surroundings – survives (and has young). It passes its features on to its offspring.</p>
+             <p>Example: on a green leaf a bird easily spots brown beetles but misses green ones. Mostly green beetles survive – and a few generations later almost every beetle is green.</p>` },
+    viz: () => vizSelection(),
+    videos: [VIDEO_CHEETAH, VIDEO_EVOLUTION] };
+
+const STEP_ONE_SENTENCE = { title: { cs: 'Jak to říct jednoduše (do testu)', en: 'How to say it simply (for the test)' },
+    speech: { cs: 'V testu byla otázka „Jednoduše ji vysvětli" ✍️', en: 'The test said "Explain it simply" ✍️' },
+    body: {
+        cs: `<p>Nestačí napsat jen „evoluce a čas". Kapybara by napsala:</p>
+             <p class="must">„Člověk se vyvíjel <strong>postupně, miliony let</strong>. Člověk a opice mají <strong>společného předka</strong>. Uplatňuje se <strong>přirozený výběr</strong> – přežije ten nejsilnější a nejschopnější."</p>
+             <p>Tři klíčová slova: <span class="formula">společný předek</span> <span class="formula">postupný vývoj</span> <span class="formula">přirozený výběr</span></p>`,
+        en: `<p>Writing only "evolution and time" is not enough. The capybara would write:</p>
+             <p class="must">"Humans developed <strong>gradually, over millions of years</strong>. Humans and apes have a <strong>common ancestor</strong>. <strong>Natural selection</strong> is at work – the strongest and most capable survive."</p>
+             <p>Three key words (Czech): <span class="formula">společný předek</span> <span class="formula">postupný vývoj</span> <span class="formula">přirozený výběr</span></p>` },
+    viz: () => vizTheories('evo') };
+
+const ORIG_LESSONS = [
+{
+    name: { cs: 'a) Tři teorie vzniku člověka', en: 'a) Three theories of human origin' },
+    q: { cs: 'Jak vznikl člověk?', en: 'How did humans come to be?' },
+    steps: [
+        { title: { cs: 'Několik teorií', en: 'Several theories' },
+          speech: { cs: 'Na tuhle otázku lidé odpovídají různě 🤔', en: 'People answer this question in different ways 🤔' },
+          body: {
+            cs: `<p>O vzniku člověka existuje <strong>několik teorií</strong> (vysvětlení). Ve škole jsme probrali tři:</p>
+                 <ol><li><span class="hl-accent">teorie stvoření</span> (biblická)</li><li><span class="hl-green">evoluční (vývojová) teorie</span></li><li><span class="hl-purple">teorie inteligentního plánu</span></li></ol>`,
+            en: `<p>There are <strong>several theories</strong> (explanations) of how humans came to be. At school we covered three:</p>
+                 <ol><li><span class="hl-accent">creation theory</span> <span class="cz">(teorie stvoření, biblická)</span></li><li><span class="hl-green">theory of evolution</span> <span class="cz">(evoluční, vývojová)</span></li><li><span class="hl-purple">intelligent design</span> <span class="cz">(teorie inteligentního plánu)</span></li></ol>` },
+          viz: () => vizTheories('all') },
+        { title: { cs: '1. Teorie stvoření (biblická)', en: '1. Creation theory (biblical)' },
+          body: {
+            cs: `<p class="must">Podle <span class="hl-accent">teorie stvoření</span> <strong>člověka stvořil Bůh</strong>. Vychází z <strong>Bible</strong> – posvátné knihy <strong>křesťanů</strong>.</p>
+                 <p>Podle Bible Bůh stvořil svět za 6 dní a sedmý den odpočíval. Šestý den stvořil první lidi – <strong>Adama a Evu</strong>.</p>`,
+            en: `<p class="must">According to <span class="hl-accent">creation theory</span> <span class="cz">(teorie stvoření)</span>, <strong>God created humans</strong>. It comes from the <strong>Bible</strong> – the holy book of <strong>Christians</strong>.</p>
+                 <p>According to the Bible, God created the world in 6 days and rested on the seventh. On the sixth day he created the first people – <strong>Adam and Eve</strong>.</p>` },
+          viz: () => vizDays(),
+          videos: [VIDEO_CREATION] },
+        Object.assign({}, STEP_DARWIN, { title: { cs: '2. Evoluční (vývojová) teorie', en: '2. Theory of evolution (evoluční / vývojová)' } }),
+        STEP_SELECTION,
+        { title: { cs: '3. Teorie inteligentního plánu', en: '3. Intelligent design (inteligentní plán)' },
+          body: {
+            cs: `<p class="must">Podle <span class="hl-purple">teorie inteligentního plánu</span> je stvořitelem světa <strong>nějaká vyšší inteligentní síla</strong> (není to bůh).</p>
+                 <p>Život je podle ní tak složitý, že ho musel někdo chytře „naplánovat".</p>`,
+            en: `<p class="must">According to <span class="hl-purple">intelligent design</span> <span class="cz">(teorie inteligentního plánu)</span>, the creator of the world is <strong>some higher intelligent force</strong> (it is not God).</p>
+                 <p>It says life is so complicated that someone must have cleverly "planned" it.</p>` },
+          viz: () => vizIdea() },
+    ],
+    sumTitle: { cs: 'Tři teorie vzniku člověka', en: 'Three theories of human origin' },
+    sum: () => lang === 'cs' ? sumRows([
+        ['📖', '<b>Teorie stvoření</b> (biblická) – člověka stvořil Bůh. Bible, křesťané.'],
+        ['🧬', '<b>Evoluční (vývojová)</b> – Charles Darwin (dál rozpracoval Richard Dawkins). Člověk a opice mají společného předka, postupný vývoj, přirozený výběr.'],
+        ['💡', '<b>Teorie inteligentního plánu</b> – stvořitelem světa je vyšší inteligentní síla (není to bůh).'],
+        ['❗', 'Když test chce „další teorii", napiš <b>jinou než evoluční</b> – třeba teorii stvoření.'],
+        ['🔬', 'Vědci dnes vznik člověka vysvětlují evolucí. Teorie stvoření vychází z náboženské víry.'],
+    ]) : sumRows([
+        ['📖', '<b>Creation theory</b> (teorie stvoření) – God created humans. The Bible, Christians.'],
+        ['🧬', '<b>Theory of evolution</b> (evoluční, vývojová) – Charles Darwin (developed further by Richard Dawkins). Humans and apes share an ancestor, gradual change, natural selection.'],
+        ['💡', '<b>Intelligent design</b> (inteligentní plán) – the world was created by a higher intelligent force (not God).'],
+        ['❗', 'If the test asks for "another theory", write <b>one that is not evolution</b> – e.g. creation theory.'],
+        ['🔬', 'Scientists today explain human origins with evolution. Creation theory comes from religious faith.'],
+    ]),
+},
+{
+    name: { cs: 'b) Evoluce zblízka', en: 'b) Evolution up close' },
+    q: { cs: 'Co přesně říká evoluční teorie?', en: 'What exactly does evolution say?' },
+    steps: [STEP_DARWIN, STEP_SELECTION, STEP_ONE_SENTENCE],
+    sumTitle: { cs: 'Evoluční (vývojová) teorie', en: 'The theory of evolution' },
+    sum: () => lang === 'cs' ? sumRows([
+        ['👤', 'Autor: <b>Charles Darwin</b>. Původní podoba je přežitá, dál ji rozpracoval např. Richard Dawkins.'],
+        ['🌳', 'Člověk a opice mají <b>stejného vývojového předka</b>.'],
+        ['🐢', '<b>Postupný vývoj</b> během milionů let.'],
+        ['🏆', '<b>Přirozený výběr</b> – přežije nejsilnější, nejschopnější, nejatraktivnější.'],
+    ]) : sumRows([
+        ['👤', 'Author: <b>Charles Darwin</b>. The original version is outdated; developed further e.g. by Richard Dawkins.'],
+        ['🌳', 'Humans and apes have <b>the same evolutionary ancestor</b>.'],
+        ['🐢', '<b>Gradual change</b> over millions of years.'],
+        ['🏆', '<b>Natural selection</b> – the strongest, most capable, most attractive survive.'],
+    ]),
+},
+];
+
+// ═══════════════════════════════════════════════════════════════
+// QUIZ BANK (multiple choice) – first option listed is correct
+// ═══════════════════════════════════════════════════════════════
+const BANK = [];
+const tr = a => ({ cs: a[0], en: a[1] });
+function Q(tab, q, opts, ex, fixed) { BANK.push({ tab, q: tr(q), opts: opts.map(tr), c: 0, ex: tr(ex), fixed: !!fixed }); }
+
+// Classification questions are generated from this list: [emoji, cs, en, type, place]
+const ITEMS = [
+    ['📖', 'tištěná kniha', 'a printed book', 'w', 'lib'], ['📜', 'ručně psaná listina', 'a handwritten charter', 'w', 'arch'],
+    ['✍️', 'smlouva', 'a treaty', 'w', 'arch'], ['🪨', 'nápis vytesaný do kamene', 'an inscription carved in stone', 'w', ''],
+    ['✉️', 'starý dopis', 'an old letter', 'w', 'arch'], ['📰', 'noviny', 'a newspaper', 'w', 'lib'],
+    ['📒', 'kronika', 'a chronicle', 'w', ''], ['📕', 'Bible', 'the Bible', 'w', ''],
+    ['🗡️', 'meč', 'a sword', 'm', 'mus'], ['🏺', 'hliněný hrnec', 'a clay pot', 'm', 'mus'],
+    ['🪓', 'sekera', 'an axe', 'm', 'mus'], ['💍', 'prsten', 'a ring', 'm', 'mus'],
+    ['🪙', 'mince', 'a coin', 'm', ''], ['🦴', 'kosti pravěkého člověka', 'bones of a prehistoric human', 'm', ''],
+    ['🛡️', 'štít', 'a shield', 'm', 'mus'], ['🔨', 'kladivo', 'a hammer', 'm', ''],
+    ['🖼️', 'obraz', 'a painting', 'p', 'gal'], ['🗿', 'socha', 'a statue', 'p', 'gal'],
+    ['📷', 'stará fotografie', 'an old photograph', 'p', ''], ['🎬', 'film', 'a film', 'p', ''],
+    ['🗺️', 'mapa', 'a map', 'p', ''], ['🎨', 'Mona Lisa', 'the Mona Lisa', 'p', ''],
+];
+const CAT_OPTS = { w: ['písemný', 'written'], m: ['hmotný', 'material'], p: ['obrazový', 'pictorial'] };
+const CAT_EX = {
+    w: ['Je na něm písmo → pramen písemný. Uchovává se v knihovně nebo v archivu.', 'It has writing → a written source. Kept in a library or an archive.'],
+    m: ['Je to předmět, který lidé používali → pramen hmotný. Uchovává se v muzeu.', 'It is an object people used → a material source. Kept in a museum.'],
+    p: ['Něco zobrazuje → pramen obrazový. Uchovává se v galerii.', 'It shows something → a pictorial source. Kept in a gallery.'],
+};
+const PLACE_OPTS = { lib: ['v knihovně', 'in a library'], arch: ['v archivu', 'in an archive'], mus: ['v muzeu', 'in a museum'], gal: ['v galerii', 'in a gallery'] };
+const PLACE_EX = {
+    lib: ['Tištěné písemné prameny jsou hlavně v knihovně.', 'Printed written sources are mostly in a library.'],
+    arch: ['Ručně psané písemné prameny jsou převážně v archivu.', 'Handwritten sources are mostly in an archive.'],
+    mus: ['Hmotné prameny jsou v muzeu (v expozici nebo v depozitáři).', 'Material sources are in a museum (on display or in storage).'],
+    gal: ['Obrazové prameny jsou v galerii.', 'Pictorial sources are in a gallery.'],
+};
+ITEMS.forEach(([e, cs, en, cat, place]) => {
+    const order = ['w', 'm', 'p'];
+    BANK.push({ tab: 'src', q: { cs: `Jaký pramen je ${e} ${cs}?`, en: `What kind of source is ${e} ${en}?` },
+        opts: order.map(k => tr(CAT_OPTS[k])), c: order.indexOf(cat), ex: tr(CAT_EX[cat]), fixed: true });
+    if (place) {
+        const po = ['lib', 'arch', 'mus', 'gal'];
+        BANK.push({ tab: 'src', q: { cs: `Kde bychom nejspíš našli ${e} ${cs}?`, en: `Where would we most likely find ${e} ${en}?` },
+            opts: po.map(k => tr(PLACE_OPTS[k])), c: po.indexOf(place), ex: tr(PLACE_EX[place]), fixed: true });
+    }
+});
+
+// Sources
+Q('src', ['Jak se jmenuje sklad muzea, kde jsou předměty, které nejsou vystavené?', 'What is the museum storage called, where objects not on display are kept?'],
+  [['depozitář', 'depozitář (storage)'], ['expozice', 'expozice (exhibition)'], ['archiv', 'archive'], ['galerie', 'gallery']],
+  ['Depozitář = sklad muzea. Expozice = výstava.', 'Depozitář = the museum\'s storage. Expozice = the exhibition.']);
+Q('src', ['Jak se jmenuje část muzea, kde jsou předměty vystavené pro návštěvníky?', 'What is the part of a museum where objects are on display called?'],
+  [['expozice', 'expozice (exhibition)'], ['depozitář', 'depozitář (storage)'], ['knihovna', 'library'], ['archiv', 'archive']],
+  ['Expozice = výstava. Depozitář = sklad.', 'Expozice = the exhibition. Depozitář = the storage.']);
+Q('src', ['Jak se jmenuje věda, která zkoumá hmotné prameny?', 'What is the science that studies material sources called?'],
+  [['archeologie', 'archaeology (archeologie)'], ['dějepis', 'history (dějepis)'], ['zeměpis', 'geography'], ['přírodopis', 'biology']],
+  ['Archeologie! V testu pozor – „dějepis" je špatně.', 'Archaeology (archeologie)! Careful in the test – "history" is wrong.']);
+Q('src', ['Kde se uchovávají převážně ručně psané prameny?', 'Where are mostly handwritten sources kept?'],
+  [['v archivu', 'in an archive'], ['v knihovně', 'in a library'], ['v galerii', 'in a gallery'], ['v depozitáři', 'in the museum storage']],
+  ['Archiv = ručně psané, knihovna = tištěné.', 'Archive = handwritten, library = printed.']);
+Q('src', ['Kde se uchovávají hlavně tištěné prameny?', 'Where are mostly printed sources kept?'],
+  [['v knihovně', 'in a library'], ['v archivu', 'in an archive'], ['v galerii', 'in a gallery'], ['v expozici', 'in the exhibition']],
+  ['Knihovna = tištěné, archiv = ručně psané.', 'Library = printed, archive = handwritten.']);
+Q('src', ['Pro které období dějin jsou hmotné prameny jediným zdrojem informací?', 'For which period are material sources the only source of information?'],
+  [['pro nejstarší období (pravěk)', 'the oldest period (prehistory)'], ['pro středověk', 'the Middle Ages'], ['pro novověk', 'the modern era'], ['pro dnešek', 'today']],
+  ['V pravěku lidé ještě neuměli psát, takže písemné prameny nejsou.', 'In prehistory people couldn\'t write yet, so there are no written sources.']);
+Q('src', ['Co zkoumáme u obrazových pramenů?', 'What do we study about pictorial sources?'],
+  [['co znázorňují, jak a proč', 'what they show, how and why'], ['jen kolik váží', 'only how heavy they are'], ['jen kolik stály', 'only how much they cost'], ['nic, jen se na ně díváme', 'nothing, we only look at them']],
+  ['Co daný předmět znázorňuje, jak a proč.', 'What it shows, how and why.']);
+Q('src', ['Co je úkolem historika?', 'What is a historian\'s job?'],
+  [['z dílčích informací sestavit celkový obraz určitého období', 'to put partial information together into a picture of a period'], ['vykopávat předměty ze země', 'to dig objects out of the ground'], ['malovat obrazy do galerií', 'to paint pictures for galleries'], ['psát pohádky', 'to write fairy tales']],
+  ['Vykopávky dělá hlavně archeolog. Historik skládá celkový obraz.', 'Digging is mostly the archaeologist\'s job. The historian builds the whole picture.']);
+Q('src', ['Proč je obraz minulosti nestálý a neúplný?', 'Why is the picture of the past changing and incomplete?'],
+  [['nacházejí se nové prameny a zlepšuje se technika zkoumání', 'new sources are found and research technology improves'], ['protože se minulost sama mění', 'because the past itself changes'], ['protože historici zapomínají', 'because historians forget things'], ['není – obraz minulosti je hotový', 'it isn\'t – the picture is finished']],
+  ['Nové prameny, lepší technologie a jiný názor na výklad dějin.', 'New sources, better technology and new views on how to explain history.']);
+Q('src', ['Co je historický pramen?', 'What is a historical source?'],
+  [['vše, co po předcích zbylo', 'anything our ancestors left behind'], ['jen kniha', 'only a book'], ['studánka s vodou', 'a water spring'], ['jen věci v muzeu', 'only things in a museum']],
+  ['Pramen je vše, co po předcích zbylo – zdroj informací o minulosti.', 'A source is anything our ancestors left behind – a source of information about the past.']);
+
+// Time
+Q('time', ['Jak se říká chápání času, když ho počítáme od pevného počátku?', 'What do we call understanding time as counted from a fixed starting point?'],
+  [['lineární', 'linear (lineární)'], ['cyklické', 'cyclical (cyklické)'], ['kruhové', 'circular'], ['roční', 'yearly']],
+  ['Lineární – čas plyne jako přímka od pevného počátku.', 'Linear – time runs like a line from a fixed start.']);
+Q('time', ['Které chápání času říká, že se čas opakuje dokola?', 'Which understanding of time says that time repeats over and over?'],
+  [['cyklické', 'cyclical (cyklické)'], ['lineární', 'linear (lineární)'], ['přímkové', 'straight'], ['historické', 'historical']],
+  ['Cyklické – jako kruh: jaro, léto, podzim, zima…', 'Cyclical – like a circle: spring, summer, autumn, winter…']);
+Q('time', ['Co je příkladem cyklického chápání času?', 'Which is an example of cyclical time?'],
+  [['jaro → léto → podzim → zima → jaro', 'spring → summer → autumn → winter → spring'], ['roky od narození Krista', 'years since the birth of Christ'], ['roky vlády krále', 'years of a king\'s reign'], ['věk babičky', 'grandma\'s age']],
+  ['Roční období se opakují dokola – to je cyklický čas.', 'The seasons repeat over and over – that is cyclical time.']);
+Q('time', ['Od čeho počítáme roky v našem letopočtu?', 'What do we count years from in our calendar?'],
+  [['od narození Krista', 'from the birth of Christ'], ['od založení Říma', 'from the founding of Rome'], ['od vzniku písma', 'from the invention of writing'], ['od objevení Ameriky', 'from the discovery of America']],
+  ['Náš letopočet začíná narozením Krista. Římané počítali od založení Říma.', 'Our calendar starts with the birth of Christ. The Romans counted from the founding of Rome.']);
+Q('time', ['Co znamená zkratka „př. n. l."?', 'What does "př. n. l." mean?'],
+  [['před naším letopočtem', 'before our era (BC)'], ['po naší lekci', 'after our lesson'], ['přesně na letopočet', 'exactly on the year'], ['před novým létem', 'before next summer']],
+  ['př. n. l. = před naším letopočtem, n. l. = našeho letopočtu.', 'př. n. l. = BC, n. l. = AD.']);
+Q('time', ['Který rok je nejstarší?', 'Which year is the oldest?'],
+  [['500 př. n. l.', '500 BC'], ['100 př. n. l.', '100 BC'], ['100 n. l.', 'AD 100'], ['500 n. l.', 'AD 500']],
+  ['Před naším letopočtem počítáme pozpátku: čím větší číslo, tím starší.', 'BC counts backwards: the bigger the number, the older.']);
+Q('time', ['Jaký je rozdíl mezi minulostí a historií?', 'What is the difference between the past and history?'],
+  [['minulost je vše, co se stalo; historie je to, co z ní poznáváme z pramenů', 'the past is everything that happened; history is what we learn about it from sources'], ['je to totéž', 'they are the same'], ['historie je budoucnost', 'history is the future'], ['minulost je jen to, co je v knihách', 'the past is only what is in books']],
+  ['Minulost je celá. Historie je ta část, kterou známe z pramenů (a věda, která ji zkoumá).', 'The past is everything. History is the part we know from sources (and the science studying it).']);
+Q('time', ['Co je úkolem dějepisu?', 'What is history for?'],
+  [['zkoumat minulost lidí pomocí pramenů a hledat příčiny a důsledky', 'to study people\'s past using sources and find causes and consequences'], ['předpovídat počasí', 'to forecast the weather'], ['vymýšlet příběhy', 'to make up stories'], ['počítat příklady', 'to do sums']],
+  ['Dějepis zkoumá minulost lidské společnosti z pramenů: co, kdy, kde, proč a s jakými důsledky.', 'History studies the past of human society from sources: what, when, where, why and with what consequences.']);
+Q('time', ['Která dvě období dějin se učíme v 6. třídě?', 'Which two periods of history do we learn in Year 6?'],
+  [['pravěk a starověk', 'prehistory and antiquity (pravěk a starověk)'], ['středověk a novověk', 'Middle Ages and modern era'], ['starověk a středověk', 'antiquity and Middle Ages'], ['jen novověk', 'only the modern era']],
+  ['V 6. třídě: pravěk a starověk. Středověk přijde později.', 'In Year 6: prehistory and antiquity. The Middle Ages come later.']);
+Q('time', ['Co odděluje pravěk od starověku?', 'What separates prehistory from antiquity?'],
+  [['vznik písma', 'the invention of writing'], ['zánik Říma', 'the fall of Rome'], ['objevení Ameriky', 'the discovery of America'], ['narození Krista', 'the birth of Christ']],
+  ['Se vznikem písma (asi 3000 př. n. l.) začíná starověk.', 'Antiquity starts with the invention of writing (about 3000 BC).']);
+Q('time', ['Jaké je správné pořadí období?', 'What is the right order of the periods?'],
+  [['pravěk → starověk → středověk → novověk', 'prehistory → antiquity → Middle Ages → modern era'], ['starověk → pravěk → středověk → novověk', 'antiquity → prehistory → Middle Ages → modern era'], ['pravěk → středověk → starověk → novověk', 'prehistory → Middle Ages → antiquity → modern era'], ['novověk → středověk → starověk → pravěk', 'modern era → Middle Ages → antiquity → prehistory']],
+  ['Pravěk je nejstarší, novověk trvá dodnes.', 'Prehistory is the oldest, the modern era lasts until today.']);
+Q('time', ['Ve kterém roce zanikla Západořímská říše (konec starověku)?', 'In which year did the Western Roman Empire fall (end of antiquity)?'],
+  [['476 n. l.', 'AD 476'], ['1492', '1492'], ['3000 př. n. l.', '3000 BC'], ['1348', '1348']],
+  ['476 n. l. – tím končí starověk a začíná středověk.', 'AD 476 – antiquity ends and the Middle Ages begin.']);
+Q('time', ['V řadě „příčina → událost → důsledek": co je důsledek?', 'In "cause → event → consequence": what is the consequence?'],
+  [['co událost způsobila', 'what the event led to'], ['proč se událost stala', 'why the event happened'], ['kdy se událost stala', 'when the event happened'], ['kdo ji zapsal', 'who wrote it down']],
+  ['Příčina = proč se to stalo, důsledek = co z toho vzniklo.', 'Cause = why it happened, consequence = what came of it.']);
+
+// Origins
+Q('orig', ['Kdo je autorem evoluční teorie?', 'Who is the author of the theory of evolution?'],
+  [['Charles Darwin', 'Charles Darwin'], ['Richard Dawkins', 'Richard Dawkins'], ['Karel IV.', 'Charles IV'], ['Isaac Newton', 'Isaac Newton']],
+  ['Charles Darwin. Richard Dawkins jeho teorii jen dál rozpracoval.', 'Charles Darwin. Richard Dawkins only developed it further.']);
+Q('orig', ['Jak se jinak nazývá evoluční teorie?', 'What is another (Czech) name for the theory of evolution?'],
+  [['vývojová', 'vývojová (developmental)'], ['biblická', 'biblická (biblical)'], ['inteligentní', 'inteligentní (intelligent)'], ['cyklická', 'cyklická (cyclical)']],
+  ['Evoluce = vývoj, proto vývojová teorie.', 'Evolution = development (vývoj), so "vývojová teorie".']);
+Q('orig', ['Co říká evoluční teorie o člověku a opici?', 'What does evolution say about humans and apes?'],
+  [['mají stejného vývojového předka', 'they have the same evolutionary ancestor'], ['člověk vznikl z dnešní opice', 'humans came from today\'s apes'], ['nejsou vůbec příbuzní', 'they are not related at all'], ['opice vznikly z člověka', 'apes came from humans']],
+  ['Člověk a opice mají společného předka – jsou jako vzdálení příbuzní.', 'Humans and apes share an ancestor – they are like distant relatives.']);
+Q('orig', ['Co je přirozený výběr?', 'What is natural selection?'],
+  [['přežije a má potomky ten nejsilnější a nejschopnější', 'the strongest and most capable survive and have young'], ['lidé si vybírají zvířata v obchodě', 'people choose animals in a shop'], ['všichni přežijí stejně', 'everyone survives equally'], ['zvířata si vybírají jídlo', 'animals choose their food']],
+  ['Přežijí ti nejlépe přizpůsobení a předají své vlastnosti potomkům.', 'Those best suited survive and pass their features on.']);
+Q('orig', ['Kdo stvořil člověka podle teorie stvoření?', 'Who created humans according to creation theory?'],
+  [['Bůh', 'God'], ['vyšší inteligentní síla (ne bůh)', 'a higher intelligent force (not God)'], ['přirozený výběr', 'natural selection'], ['Charles Darwin', 'Charles Darwin']],
+  ['Teorie stvoření je biblická: člověka stvořil Bůh.', 'Creation theory is biblical: God created humans.']);
+Q('orig', ['Z jaké knihy vychází teorie stvoření?', 'Which book is creation theory based on?'],
+  [['z Bible', 'the Bible'], ['z knihy O vzniku druhů', 'On the Origin of Species'], ['z kroniky', 'a chronicle'], ['z učebnice dějepisu', 'a history textbook']],
+  ['Z Bible – posvátné knihy křesťanů.', 'The Bible – the holy book of Christians.']);
+Q('orig', ['Kdo je stvořitelem světa podle teorie inteligentního plánu?', 'Who created the world according to intelligent design?'],
+  [['nějaká vyšší inteligentní síla', 'some higher intelligent force'], ['Charles Darwin', 'Charles Darwin'], ['přirozený výběr', 'natural selection'], ['nikdo, všechno je náhoda', 'nobody, it\'s all chance']],
+  ['Vyšší inteligentní síla – podle zápisu to není bůh.', 'A higher intelligent force – according to the notes it is not God.']);
+Q('orig', ['Test chce „další teorii" kromě evoluční. Co napíšeš?', 'The test asks for "another theory" besides evolution. What do you write?'],
+  [['teorii stvoření nebo teorii inteligentního plánu', 'creation theory or intelligent design'], ['znovu evoluci jinými slovy', 'evolution again in other words'], ['lineární čas', 'linear time'], ['archeologii', 'archaeology']],
+  ['Jiná teorie = stvoření (Bůh stvořil člověka) nebo inteligentní plán (vyšší síla).', 'Another theory = creation (God created humans) or intelligent design (a higher force).']);
+Q('orig', ['Jak dlouho podle evoluční teorie trval vývoj člověka?', 'How long did human development take according to evolution?'],
+  [['miliony let', 'millions of years'], ['6 dní', '6 days'], ['100 let', '100 years'], ['jeden den', 'one day']],
+  ['Vývoj byl postupný, trval miliony let. 6 dní je z Bible.', 'Change was gradual and took millions of years. 6 days comes from the Bible.']);
+Q('orig', ['Se kterými lidmi je spojená teorie stvoření?', 'Which people is creation theory linked to?'],
+  [['s křesťany', 'Christians'], ['s archeology', 'archaeologists'], ['s Darwinem', 'Darwin'], ['se starými Římany', 'the ancient Romans']],
+  ['Teorie stvoření vychází z Bible – věří jí křesťané.', 'Creation theory comes from the Bible – Christians believe it.']);
+
+// ═══════════════════════════════════════════════════════════════
+// PRACTICE TEST – same questions as the school test + checker
+// Answers are matched on lowercase text without diacritics,
+// so "meč", "mec" and "Meč" all count. Czech and English both work.
+// ═══════════════════════════════════════════════════════════════
+const ITEM_RE = {
+    m: ['mec', 'zbran', 'seker|sekyr', 'nuz|noz', 'kopi|ostep|spears?\\b', 'luk|bows?\\b', 'sip|arrow', 'stit|shield', 'helm|prilb', 'brneni|armou?r',
+        'nadobi|nadob|dish', 'hrn(ec|ce|ek|ky|cek)|pots?\\b|potter', 'misk|misa|bowl', 'dzban|jug', 'keramik|ceramic', 'talir|plate', 'lzic|spoon', 'hrnick|cup',
+        'naradi|tools?\\b', 'nastroj', 'kladiv|hammer', 'motyk|hoe\\b', 'srp\\b|sickle', 'pestni|klin\\b|hand ?axe', 'pazour|flint',
+        'sperk|jewel', 'prsten|rings?\\b', 'naram|bracelet', 'nahrdel|necklace', 'korál|koral|beads', 'spon(a|y|ka)\\b|brooch',
+        'minc|penize|penez|coin|money', 'kost(i|ra|ry)?\\b|bones?\\b|skeleton', 'lebk|skull', 'hrob|grave|tomb',
+        'obleceni|oblek|odev|saty\\b|kosil|cloth|dress', 'bot(a|y|u)\\b|shoes?\\b', 'budov|building', 'hrad|zamek|zamk|castle', 'chram|kostel|temple|church', 'pyramid',
+        'nabytek|zidl|furniture|chair', 'hrack|panenk|toy|doll', 'vuz|cart|wagon', 'kol(o|a)\\b|wheel', 'lod|boat|ship', 'oruzi'],
+    w: ['knih|books?\\b', 'bibl', 'listin|charter|deed', 'smlouv|treat|contract', 'napis(y|u|em)?\\b|inscription', 'dopis|letters?\\b', 'kronik|chronicle',
+        'novin|newspaper', 'casopis|magazine', 'zakon|laws?\\b', 'dokument|document', 'rukopis|manuscript', 'denik|diar', 'zapis|record', 'pergamen|parchment',
+        'papyr', 'tabulk|tablet', 'svit(ek|k)|scroll', 'ucebnic|textbook', 'slovnik|dictionar', 'encyklop', 'matrik|register', 'modlitb|prayer', 'evangel|gospel'],
+    p: ['obraz(y|u|em|ech)?\\b|painting|picture', 'malb', 'kresb|kresl|drawing', 'soch(a|y|u|ou)?\\b|sosk|statue|sculpt', 'foto|photo', 'film|movie', 'map(a|y|u|ou)?\\b|maps?\\b',
+        'plakat|poster', 'portret|portrait', 'fresk|fresco', 'mozaik|mosaic', 'ilustrac|illustrat', 'video', 'komiks|comic', 'pohlednic|postcard',
+        'mona|lisa|liza', 'perl|pearl', 'venus|venuse', 'rytin|engraving', 'tapiser|tapestr'],
+};
+const PLACE_RE = {
+    lib: { re: 'knihovn|librar', label: { cs: 'knihovna', en: 'library (knihovna)' } },
+    arch: { re: 'archiv|archive', label: { cs: 'archiv', en: 'archive (archiv)' } },
+    mus: { re: 'muze|museum|musea|expozic|depozit', label: { cs: 'muzeum', en: 'museum (muzeum)' } },
+    gal: { re: 'galeri|galler', label: { cs: 'galerie', en: 'gallery (galerie)' } },
+};
+const C = (cs, en, re) => ({ label: { cs, en }, re });
+
+const TEST = [
+    { num: '1', type: 'list', cat: 'm', places: ['mus'], lesson: ['src', 0],
+      q: { cs: 'Napiš 4 hmotné prameny. Kde tyto prameny uchováváme?', en: 'Name 4 material sources. Where do we keep them?' },
+      model: { cs: 'Např. <b>meč, hliněný hrnec, sekera, prsten</b> (zbraně, nádobí, nářadí, šperky). Uchováváme je v <b>muzeu</b> – v expozici nebo v depozitáři.',
+               en: 'E.g. <b>a sword, a clay pot, an axe, a ring</b> (weapons, dishes, tools, jewellery). We keep them in a <b>museum</b> (muzeum) – on display or in storage.' } },
+    { num: '2', type: 'list', cat: 'w', places: ['lib', 'arch'], lesson: ['src', 0],
+      q: { cs: 'Napiš 4 písemné prameny. Kde tyto prameny uchováváme?', en: 'Name 4 written sources. Where do we keep them?' },
+      model: { cs: 'Např. <b>kniha, listina, smlouva, nápis vytesaný do kamene</b> (také Bible, kronika, dopis). Uchováváme je v <b>knihovně</b> (tištěné) a v <b>archivu</b> (ručně psané).',
+               en: 'E.g. <b>a book, a charter, a treaty, an inscription carved in stone</b> (also the Bible, a chronicle, a letter). We keep them in a <b>library</b> (knihovna – printed) and an <b>archive</b> (archiv – handwritten).' } },
+    { num: '3', type: 'list', cat: 'p', places: ['gal'], lesson: ['src', 0],
+      q: { cs: 'Napiš 4 obrazové prameny. Kde tyto prameny uchováváme?', en: 'Name 4 pictorial sources. Where do we keep them?' },
+      model: { cs: 'Např. <b>obraz, socha, fotografie, film</b> (také mapa, Mona Lisa). Uchováváme je v <b>galerii</b>.',
+               en: 'E.g. <b>a painting, a statue, a photo, a film</b> (also a map, the Mona Lisa). We keep them in a <b>gallery</b> (galerie).' } },
+    { num: '4', lesson: ['time', 0], q: { cs: 'Co je úkolem dějepisu?', en: 'What is the task of history?' },
+      concepts: [C('minulost lidí', 'the past of people', 'minul|past\\b|drive|predk|predc|ancestor|stalo|happened'),
+                 C('pomocí pramenů', 'using sources', 'pramen|source|zdroj|evidence'),
+                 C('příčiny a důsledky (proč)', 'causes and consequences (why)', 'pricin|dusled|nasled|proc\\b|cause|consequen|effect|why\\b|souvislost'),
+                 C('poznat / pochopit / sestavit obraz', 'understand / build a picture', 'pochop|porozum|rozum|obraz|poucit|vyklad|vysvetl|zjist|pozna|nauc|understand|picture|learn|explain|find out')],
+      model: { cs: 'Dějepis <b>zkoumá minulost lidské společnosti</b> pomocí <b>historických pramenů</b>. Zjišťuje, co se stalo, <b>proč</b> se to stalo (příčiny) a <b>co to způsobilo</b> (důsledky), a z dílčích informací skládá celkový obraz období – abychom minulosti rozuměli a poučili se z ní.',
+               en: 'History <b>studies the past of human society</b> using <b>historical sources</b>. It finds out what happened, <b>why</b> (causes) and <b>what it led to</b> (consequences), and builds a whole picture of a period – so we understand the past and learn from it.' } },
+    { num: '5', lesson: ['time', 0], q: { cs: 'Jaký je rozdíl mezi minulostí a historií?', en: 'What is the difference between the past and history?' },
+      concepts: [C('minulost = všechno, co se stalo', 'past = everything that happened', 'vse|vsechn|cokoli|everything|all\\b|whatever'),
+                 C('historie zkoumá / je věda', 'history studies it / is a science', 'ved(a|y|ou|ni|ec)\\b|zkoum|studuj|zabyv|science|stud(y|ies)|research|examin'),
+                 C('historie = co víme z pramenů', 'history = what we know from sources', 'pramen|source|vime|zname|pozna|zapsa|zaznam|dochov|know|record|written|evidence')],
+      model: { cs: '<b>Minulost</b> je <b>všechno</b>, co se kdy stalo – i to, o čem nic nevíme. <b>Historie</b> (dějiny) je ta část minulosti, kterou <b>poznáváme z pramenů</b>; historie je také <b>věda</b>, která minulost zkoumá.',
+               en: '<b>The past</b> is <b>everything</b> that ever happened – even what we know nothing about. <b>History</b> is the part of the past we <b>know from sources</b>; history is also the <b>science</b> that studies the past.' } },
+    { num: '6a', lesson: ['src', 1], q: { cs: 'Vysvětli pojem: depozitář', en: 'Explain the term: depozitář' },
+      concepts: [C('sklad / úložiště', 'storage', 'sklad|uloz|uschov|schov|store|storage|warehouse|depot|kept'),
+                 C('v muzeu', 'in a museum', 'muze|museum|galer|galler'),
+                 C('předměty nejsou vystavené', 'objects not on display', 'nevystav|neni vystav|nejsou vystav|not (on )?display|not shown|not exhibit|hidden|nevid|neukaz')],
+      model: { cs: '<b>Depozitář</b> je <b>sklad muzea</b>. Jsou v něm uložené předměty, které <b>nejsou vystavené</b>.',
+               en: '<b>Depozitář</b> is the <b>museum\'s storage</b>. It holds objects that are <b>not on display</b>.' } },
+    { num: '6b', lesson: ['src', 1], q: { cs: 'Vysvětli pojem: expozice', en: 'Explain the term: expozice' },
+      concepts: [C('výstava / vystavené předměty', 'exhibition / on display', 'vystav|display|exhibit|ukaz|show'),
+                 C('v muzeu (galerii)', 'in a museum (gallery)', 'muze|museum|galer|galler'),
+                 C('pro návštěvníky', 'for visitors', 'navstev|lid(e|i)\\b|verejn|divat|prohl|visitor|people|public|look|see\\b')],
+      model: { cs: '<b>Expozice</b> je <b>výstava</b> – část muzea, kde jsou předměty <b>vystavené</b>, aby si je <b>návštěvníci</b> mohli prohlédnout.',
+               en: '<b>Expozice</b> is the <b>exhibition</b> – the part of a museum where objects are <b>on display</b> for <b>visitors</b> to see.' } },
+    { num: '6c', lesson: ['time', 1], q: { cs: 'Jak se říká chápání času, když ho počítáme od pevného počátku?', en: 'What do we call understanding time as counted from a fixed starting point?' },
+      concepts: [C('lineární', 'linear (lineární)', 'linea')],
+      wrong: [{ re: 'cykl|cycl', hint: { cs: 'Cyklické je to druhé (opakuje se dokola). Od pevného počátku = lineární.', en: 'Cyclical is the other one (it repeats). From a fixed start = linear.' } }],
+      model: { cs: '<b>Lineární</b> chápání času – čas plyne jako přímka od pevného počátku (např. od narození Krista).',
+               en: '<b>Linear</b> (lineární) – time runs like a line from a fixed start (e.g. the birth of Christ).' } },
+    { num: '6d', lesson: ['time', 1], q: { cs: 'Jaké chápání času ještě známe? Vysvětli.', en: 'What other understanding of time do we know? Explain.' },
+      concepts: [C('cyklické', 'cyclical (cyklické)', 'cykl|cycl|kruh|circle'),
+                 C('opakuje se dokola', 'it repeats', 'opak|dokola|znovu|repeat|again|over and over'),
+                 C('příklad (roční období…)', 'an example (seasons…)', 'jaro|leto|podzim|zim|rocni|obdobi|den a noc|mesic|season|spring|summer|autumn|winter|fall\\b|day and night|moon')],
+      model: { cs: '<b>Cyklické</b> chápání času – čas se <b>opakuje dokola</b>, jako kruh. Např. roční období: <b>jaro → léto → podzim → zima</b> → a znovu jaro; nebo den a noc.',
+               en: '<b>Cyclical</b> (cyklické) – time <b>repeats over and over</b>, like a circle. E.g. the seasons: <b>spring → summer → autumn → winter</b> → spring again; or day and night.' } },
+    { num: '6e', lesson: ['src', 2], q: { cs: 'Jak se jmenuje věda, která zkoumá historii na základě hmotných pramenů?', en: 'What is the science that studies history from material sources called?' },
+      concepts: [C('archeologie', 'archaeology (archeologie)', 'archeolog|archaeolog|archiolog')],
+      wrong: [{ re: 'dejepis|histor', hint: { cs: 'Dějepis to není! Hmotné prameny zkoumá archeologie.', en: 'Not history! Material sources are studied by archaeology.' } }],
+      model: { cs: '<b>Archeologie</b>.', en: '<b>Archaeology</b> (archeologie).' } },
+    { num: '6f', lesson: ['time', 2], q: { cs: 'Napiš 2 období lidských dějin, která budeme probírat v tomto roce.', en: 'Name the 2 periods of human history we will cover this year.' },
+      concepts: [C('pravěk', 'prehistory (pravěk)', 'pravek|prehistor'), C('starověk', 'antiquity (starověk)', 'starovek|antiq|ancient|antik')],
+      wrong: [{ re: 'stredovek|middle age|medieval', hint: { cs: 'Středověk se učí až později (obvykle v 7. třídě).', en: 'The Middle Ages come later (usually Year 7).' } },
+              { re: 'novovek|modern', hint: { cs: 'Novověk přijde až ve vyšších ročnících.', en: 'The modern era comes in later years.' } }],
+      model: { cs: '<b>Pravěk</b> a <b>starověk</b>.', en: '<b>Prehistory</b> (pravěk) and <b>antiquity</b> (starověk).' } },
+    { num: '7a', lesson: ['orig', 0], q: { cs: 'Vývojová teorie vzniku člověka – jak se jinak nazývá?', en: 'The developmental theory of human origin – what is its other name?' },
+      concepts: [C('evoluční', 'evolutionary (evoluční)', 'evolu|vyvoj')],
+      model: { cs: '<b>Evoluční</b> teorie (evoluce = vývoj).', en: 'The theory of <b>evolution</b> (evoluční teorie; evoluce = vývoj).' } },
+    { num: '7b', lesson: ['orig', 1], q: { cs: 'Kdo je autorem evoluční (vývojové) teorie?', en: 'Who is the author of the theory of evolution?' },
+      concepts: [C('Charles Darwin', 'Charles Darwin', 'darwin')],
+      wrong: [{ re: 'dawkins', hint: { cs: 'Dawkins teorii jen dál rozpracoval – autorem je Darwin.', en: 'Dawkins only developed it further – the author is Darwin.' } }],
+      model: { cs: '<b>Charles Darwin</b> (dál ji rozpracoval Richard Dawkins).', en: '<b>Charles Darwin</b> (developed further by Richard Dawkins).' } },
+    { num: '7c', lesson: ['orig', 1], q: { cs: 'Evoluční teorii jednoduše vysvětli.', en: 'Explain the theory of evolution simply.' },
+      concepts: [C('společný předek', 'common ancestor', 'predk|predek|predc|ancestor|spolecn|common|pribuz|relat'),
+                 C('opice', 'apes', 'opic|apes?\\b|monkey|chimp|simpanz|goril'),
+                 C('postupný vývoj (miliony let)', 'gradual change (millions of years)', 'postup|pomal|milion|vyvij|vyvinul|vyvoj|meni|zmen|gradual|slow|million|develop|evolv|chang'),
+                 C('přirozený výběr', 'natural selection', 'prirozen|vyber|prezi|silnejs|schopn|prizpus|natural|selection|surviv|strong|fittest|adapt')],
+      model: { cs: 'Člověk se vyvíjel <b>postupně, miliony let</b>. Člověk a <b>opice</b> mají <b>společného vývojového předka</b>. Uplatňuje se <b>přirozený výběr</b> – přežije ten nejsilnější a nejschopnější.',
+               en: 'Humans developed <b>gradually, over millions of years</b>. Humans and <b>apes</b> have a <b>common ancestor</b>. <b>Natural selection</b> is at work – the strongest and most capable survive.' } },
+    { num: '8', lesson: ['orig', 0], q: { cs: 'Napiš ještě další 1 teorii a jednoduše ji vysvětli.', en: 'Name 1 more theory and explain it simply.' },
+      concepts: [C('jiná teorie (stvoření / inteligentní plán)', 'another theory (creation / intelligent design)', 'stvor|bibl|creat|inteligent|intelligent|plan|design'),
+                 C('kdo stvořil člověka (Bůh / vyšší síla)', 'who created humans (God / a higher force)', 'buh|boh|boz|god|vyssi|sil(a|ou|y)\\b|force|power|bytost|being')],
+      wrong: [{ re: 'evolu|opic|darwin|vyvoj|ape|monkey', unless: 0, hint: { cs: 'Pozor – evoluční teorie už byla v otázce 7. Napiš jinou, třeba teorii stvoření!', en: 'Careful – evolution was question 7. Write a different one, e.g. creation theory!' } }],
+      model: { cs: '<b>Teorie stvoření</b> (biblická): člověka <b>stvořil Bůh</b>, vychází z Bible (křesťané). <i>Nebo:</i> <b>teorie inteligentního plánu</b>: svět stvořila <b>vyšší inteligentní síla</b> (není to bůh).',
+               en: '<b>Creation theory</b> (biblical): <b>God created</b> humans, based on the Bible (Christians). <i>Or:</i> <b>intelligent design</b>: the world was created by a <b>higher intelligent force</b> (not God).' } },
+    { num: '⭐', lesson: ['time', 1], q: { cs: 'BONUS: Vysvětli rozdíl mezi lineárním a cyklickým chápáním času a uveď příklady.', en: 'BONUS: Explain the difference between linear and cyclical time and give examples.' },
+      concepts: [C('lineární', 'linear', 'linea'),
+                 C('pevný počátek + příklad (narození Krista, panovník…)', 'fixed start + example (birth of Christ, a ruler…)', 'pevn|pocat|zacat|zacin|narozen|krist|panovn|kral|rim\\b|rima|fixed|start|begin|birth|christ|ruler|king|rome'),
+                 C('cyklické', 'cyclical', 'cykl|cycl'),
+                 C('opakuje se + příklad (roční období…)', 'repeats + example (seasons…)', 'opak|dokola|jaro|leto|podzim|zim|rocni|den a noc|repeat|season|spring|summer|autumn|winter|day and night')],
+      model: { cs: '<b>Lineární</b> čas počítáme od <b>pevného počátku</b> (od narození Krista, od založení Říma, od nástupu nového panovníka) a plyne jedním směrem. <b>Cyklický</b> čas se <b>opakuje dokola</b> – jaro, léto, podzim, zima.',
+               en: '<b>Linear</b> time is counted from a <b>fixed start</b> (birth of Christ, founding of Rome, a new ruler) and runs one way. <b>Cyclical</b> time <b>repeats</b> – spring, summer, autumn, winter.' } },
+];
+
+// Lowercase + strip diacritics, keeping a map back to the original text
+// so we can show the words the student actually wrote.
+function normMap(s) {
+    let n = '', map = [], i = 0;
+    for (const ch of s) {
+        const nc = ch.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+        for (let j = 0; j < nc.length; j++) { n += nc[j]; map.push(i); }
+        i += ch.length;
+    }
+    return { n, map };
+}
+// All matches of a pattern that starts at the beginning of a word → original words.
+function findWords(orig, nm, pattern) {
+    const re = new RegExp('(^|[^a-z0-9])(' + pattern + ')', 'g');
+    const words = [];
+    let m;
+    while ((m = re.exec(nm.n)) !== null) {
+        const start = nm.map[m.index + m[1].length];
+        let a = start, b = start;
+        while (a > 0 && /[\p{L}\p{N}]/u.test(orig[a - 1])) a--;
+        while (b < orig.length && /[\p{L}\p{N}]/u.test(orig[b])) b++;
+        words.push(orig.slice(a, b));
+        if (m[0].length === 0) re.lastIndex++;
+    }
+    return words;
+}
+
+function evaluate(item, text) {
+    const nm = normMap(text);
+    const rows = [], hints = [];
+    let score;
+    if (item.type === 'list') {
+        const need = 4;
+        const found = [];
+        ITEM_RE[item.cat].forEach(p => { const w = findWords(text, nm, p); if (w.length) found.push(w[0]); });
+        const uniq = [...new Set(found.map(w => w.toLowerCase()))];
+        const n = Math.min(uniq.length, need);
+        rows.push({ ok: uniq.length >= need, label: t('foundSources')(n, need), small: uniq.join(', ') });
+        let placesOk = 0;
+        item.places.forEach(pk => {
+            const ok = findWords(text, nm, PLACE_RE[pk].re).length > 0;
+            if (ok) placesOk++;
+            rows.push({ ok, label: `${t('whereKept')} ${L(PLACE_RE[pk].label)}` });
+        });
+        // Sources of a different kind, e.g. "Bible" in the material question
+        ['w', 'm', 'p'].filter(k => k !== item.cat).forEach(k => {
+            ITEM_RE[k].forEach(p => findWords(text, nm, p).forEach(w => {
+                if (!uniq.includes(w.toLowerCase())) hints.push(t('wrongCat')(w, t('catName')[k]));
+            }));
+        });
+        score = (n + placesOk) / (need + item.places.length);
+    } else {
+        let ok = 0;
+        item.concepts.forEach(c => {
+            const w = findWords(text, nm, c.re);
+            if (w.length) ok++;
+            rows.push({ ok: w.length > 0, label: L(c.label), small: [...new Set(w)].slice(0, 3).join(', ') });
+        });
+        (item.wrong || []).forEach(wr => {
+            const conceptHit = wr.unless !== undefined && findWords(text, nm, item.concepts[wr.unless].re).length;
+            if (!conceptHit && findWords(text, nm, wr.re).length) hints.push(L(wr.hint));
+        });
+        score = ok / item.concepts.length;
+    }
+    return { score, rows, hints: [...new Set(hints)].slice(0, 4) };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ENGINE – tabs, lesson player, quiz runner, test runner
+// ═══════════════════════════════════════════════════════════════
+Object.assign(UI.cs, {
+    fbGreat: 'Výborně! Všechno důležité tam je 🎉🦫',
+    fbOk: 'Dobrý základ! Podívej se, co ještě chybí 🌿',
+    fbLow: 'Podívej se na vzorovou odpověď a zkus to napsat znovu 💧',
+    fbRevealed: 'Přečti si vzor a zkus ho napsat vlastními slovy ✍️',
+    openLesson: 'Otevřít lekci',
+});
+Object.assign(UI.en, {
+    fbGreat: 'Excellent! Everything important is there 🎉🦫',
+    fbOk: 'Good start! Have a look at what is still missing 🌿',
+    fbLow: 'Look at the model answer and try writing it again 💧',
+    fbRevealed: 'Read the model and try writing it in your own words ✍️',
+    openLesson: 'Open lesson',
+});
+
+const TABS = [
+    { key: 'src', icon: '📜', name: { cs: 'Prameny', en: 'Sources' }, lessons: SRC_LESSONS },
+    { key: 'time', icon: '⏳', name: { cs: 'Dějepis a čas', en: 'History & time' }, lessons: TIME_LESSONS },
+    { key: 'orig', icon: '🧬', name: { cs: 'Vznik člověka', en: 'Human origins' }, lessons: ORIG_LESSONS },
+    { key: 'test', icon: '📝', name: { cs: 'Test', en: 'Test' }, test: true },
+];
+const TAB = Object.fromEntries(TABS.map(x => [x.key, x]));
+BANK.forEach(q => { q.gen = /^(Jaký pramen je|Kde bychom)/.test(q.q.cs); });
+const S = {};
+let activeTab = 'src';
+try { const s = localStorage.getItem('capyHistoryTab'); if (TAB[s]) activeTab = s; } catch (e) {}
+const $ = id => document.getElementById(id);
+
+function buildUI() {
+    TABS.forEach(tb => {
+        const k = tb.key;
+        const b = document.createElement('button');
+        b.className = 'tab-btn'; b.id = 'tab_' + k; b.type = 'button'; b.setAttribute('role', 'tab');
+        b.addEventListener('click', () => switchTab(k));
+        $('tabs').appendChild(b);
+
+        const p = document.createElement('div');
+        p.className = 'tab-panel'; p.id = 'P_' + k;
+        p.innerHTML = `
+            <div class="capy-speech" id="${k}_speech"></div>
+            <div class="controls">
+                ${tb.test ? `<p class="note" id="${k}_note"></p>`
+                          : `<div class="control-group"><label for="${k}_lesson" id="${k}_lessonLbl"></label><select id="${k}_lesson"></select></div>`}
+                <div class="input-row">
+                    <button class="btn-primary" type="button" id="${k}_start"></button>
+                    <button class="btn-generate" type="button" id="${k}_rand"></button>
+                </div>
+            </div>
+            <div class="problem-display" id="${k}_display"></div>
+            <div class="step-area" id="${k}_area">
+                <div class="progress-bar"><div class="fill" id="${k}_fill"></div></div>
+                <div class="step-counter" id="${k}_counter"></div>
+                <div class="step-nav">
+                    <button class="btn-secondary" type="button" id="${k}_first"></button>
+                    <button class="btn-secondary" type="button" id="${k}_prev"></button>
+                    <button class="btn-primary" type="button" id="${k}_next"></button>
+                    <button class="btn-secondary" type="button" id="${k}_last"></button>
+                </div>
+                <div id="${k}_content" aria-live="polite"></div>
+            </div>`;
+        $('panels').appendChild(p);
+
+        S[k] = { mode: tb.test ? 'test' : 'lesson', lesson: 0, idx: 0, quiz: null,
+                 test: { ans: TEST.map(() => ''), res: TEST.map(() => null) } };
+
+        if (!tb.test) $(k + '_lesson').addEventListener('change', e => startLesson(k, +e.target.value));
+        $(k + '_start').addEventListener('click', () => tb.test ? startTest(k) : startLesson(k, +$(k + '_lesson').value));
+        $(k + '_rand').addEventListener('click', () => startQuiz(k));
+        ['first', 'prev', 'next', 'last'].forEach(w => $(k + '_' + w).addEventListener('click', () => go(k, w)));
+        $(k + '_content').addEventListener('click', e => onAction(k, e));
+        $(k + '_content').addEventListener('input', e => {
+            if (e.target.matches('textarea[data-q]')) S[k].test.ans[+e.target.dataset.q] = e.target.value;
+        });
+    });
+    $('langCs').addEventListener('click', () => setLang('cs'));
+    $('langEn').addEventListener('click', () => setLang('en'));
+}
+
+function applyStatic() {
+    document.documentElement.lang = lang;
+    document.title = t('docTitle');
+    $('appTitle').textContent = t('title');
+    $('appSubtitle').textContent = t('subtitle');
+    $('appLegend').innerHTML = t('legend');
+    $('appFooter').textContent = t('footer');
+    $('langCs').classList.toggle('active', lang === 'cs');
+    $('langEn').classList.toggle('active', lang === 'en');
+    TABS.forEach(tb => {
+        const k = tb.key;
+        $('tab_' + k).textContent = `${tb.icon} ${L(tb.name)}`;
+        if (tb.test) {
+            $(k + '_note').textContent = t('testNote');
+            $(k + '_start').textContent = t('startTest');
+            $(k + '_rand').textContent = t('quickQuiz');
+        } else {
+            $(k + '_lessonLbl').textContent = t('pickLesson');
+            const sel = $(k + '_lesson');
+            sel.innerHTML = tb.lessons.map((l, i) => `<option value="${i}">${L(l.name)}</option>`).join('');
+            sel.value = S[k].lesson;
+            $(k + '_start').textContent = t('start');
+            $(k + '_rand').textContent = t('random');
+        }
+        ['first', 'prev', 'next', 'last'].forEach(w => { $(k + '_' + w).textContent = t(w); });
+    });
+}
+
+function setLang(l) {
+    lang = l;
+    try { localStorage.setItem('capyHistoryLang', l); } catch (e) {}
+    applyStatic();
+    TABS.forEach(tb => render(tb.key));
+}
+
+function switchTab(k) {
+    activeTab = k;
+    TABS.forEach(tb => {
+        $('tab_' + tb.key).classList.toggle('active', tb.key === k);
+        $('tab_' + tb.key).setAttribute('aria-selected', tb.key === k ? 'true' : 'false');
+        $('P_' + tb.key).classList.toggle('active', tb.key === k);
+    });
+    try { localStorage.setItem('capyHistoryTab', k); } catch (e) {}
+}
+
+function total(k) {
+    const st = S[k];
+    if (st.mode === 'lesson') return TAB[k].lessons[st.lesson].steps.length;
+    if (st.mode === 'quiz') return st.quiz.qs.length;
+    return TEST.length;
+}
+
+function go(k, where) {
+    const st = S[k], n = total(k);
+    if (where === 'first') st.idx = 0;
+    else if (where === 'prev') st.idx = Math.max(0, st.idx - 1);
+    else if (where === 'next') st.idx = Math.min(n, st.idx + 1);
+    else st.idx = n;
+    render(k);
+    const area = $(k + '_area');
+    if (area.getBoundingClientRect().top < 0) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function startLesson(k, i) {
+    const st = S[k];
+    st.mode = 'lesson'; st.lesson = i; st.idx = 0;
+    $(k + '_lesson').value = i;
+    render(k);
+}
+
+function startQuiz(k) {
+    const n = TAB[k].test ? 10 : 5;
+    const pool = shuffle(TAB[k].test ? BANK : BANK.filter(q => q.tab === k));
+    const maxGen = Math.ceil(n * 0.4);   // keep "what kind of source is…" to a few per quiz
+    const picked = [];
+    let gen = 0;
+    for (const q of pool) {
+        if (picked.length >= n) break;
+        if (q.gen) { if (gen >= maxGen) continue; gen++; }
+        picked.push(q);
+    }
+    const st = S[k];
+    st.mode = 'quiz'; st.idx = 0;
+    st.quiz = { qs: picked.map(q => ({ q, order: q.fixed ? q.opts.map((_, i) => i) : shuffle(q.opts.map((_, i) => i)), pick: null })) };
+    render(k);
+}
+
+function startTest(k) {
+    S[k].mode = 'test'; S[k].idx = 0;
+    render(k);
+}
+
+function render(k) {
+    const st = S[k];
+    const n = total(k), idx = st.idx, isFinal = idx >= n;
+    $(k + '_fill').style.width = (isFinal ? 100 : ((idx + 1) / (n + 1)) * 100) + '%';
+    $(k + '_counter').textContent = isFinal
+        ? (st.mode === 'lesson' ? t('summary') : t('result'))
+        : (st.mode === 'lesson' ? t('stepOf')(idx + 1, n) : t('questionOf')(idx + 1, n));
+    $(k + '_first').disabled = idx <= 0;
+    $(k + '_prev').disabled = idx <= 0;
+    $(k + '_next').disabled = isFinal;
+    $(k + '_last').disabled = isFinal;
+    if (st.mode === 'lesson') renderLesson(k, isFinal);
+    else if (st.mode === 'quiz') renderQuiz(k, isFinal);
+    else renderTest(k, isFinal);
+}
+
+function renderLesson(k, isFinal) {
+    const st = S[k], tb = TAB[k], lesson = tb.lessons[st.lesson], idx = st.idx;
+    $(k + '_display').innerHTML = `<span class="label">${t('lessonLabel')}</span> <span class="target">${L(lesson.q)}</span>`;
+    const c = $(k + '_content');
+    if (isFinal) {
+        $(k + '_speech').innerHTML = t('doneMsg');
+        const hasNext = st.lesson < tb.lessons.length - 1;
+        c.innerHTML = `<div class="result-card animate__animated animate__fadeInUp">
+            <div style="font-size:2rem;margin-bottom:.25rem;">🦫🎉</div>
+            <div class="sub">${t('spoken')} ${t('remember')}:</div>
+            <div class="big">${L(lesson.sumTitle)}</div>
+            ${lesson.sum()}
+            <div class="reflect"><div class="ttl">${t('reflect')}</div><div class="btns">
+                <button class="btn-generate" type="button" data-act="quiz">${t('reflectOk')}</button>
+                <button class="btn-secondary" type="button" data-act="again">${t('reflectNo')}</button>
+                ${hasNext ? `<button class="btn-primary" type="button" data-act="nextLesson">${t('nextLesson')}</button>` : ''}
+            </div></div></div>`;
+        return;
+    }
+    const step = lesson.steps[idx];
+    const msgs = t('msgs');
+    $(k + '_speech').innerHTML = step.speech ? L(step.speech) : msgs[idx % msgs.length];
+    c.innerHTML = `<div class="step-card animate__animated animate__fadeIn">
+        <h3>🦫 ${t('step')} ${idx + 1}: ${L(step.title)}</h3>
+        <div class="narrative">${L(step.body)}</div>
+        ${step.viz ? step.viz() : ''}
+        ${step.videos ? vizVideos(step.videos) : ''}
+    </div>`;
+}
+
+function renderQuiz(k, isFinal) {
+    const st = S[k], qs = st.quiz.qs, idx = st.idx;
+    $(k + '_display').innerHTML = `<span class="target">${t('quizDisplay')(qs.length)}</span>`;
+    const c = $(k + '_content');
+    if (isFinal) {
+        const right = qs.filter(x => x.pick === x.q.c).length;
+        const ratio = right / qs.length;
+        $(k + '_speech').innerHTML = ratio >= 0.8 ? t('doneMsg') : t('quizBad');
+        const wrong = qs.filter(x => x.pick !== x.q.c);
+        c.innerHTML = `<div class="result-card animate__animated animate__fadeInUp">
+            <div style="font-size:2rem;margin-bottom:.25rem;">${ratio >= 0.8 ? '🦫🎉' : ratio >= 0.5 ? '🦫🌿' : '🦫💧'}</div>
+            <div class="sub">${t('spoken')}</div>
+            <div class="big">${t('quizScore')(right, qs.length)}</div>
+            ${wrong.length ? `<div class="sum"><div class="sub" style="margin:0">${t('quizMistakes')}</div>` +
+                wrong.map(x => `<div class="sum-row"><div class="ico">💡</div><div><b>${L(x.q.q)}</b><br>${t('rightAnswer')} ${L(x.q.opts[x.q.c])}</div></div>`).join('') + '</div>' : ''}
+            <div class="reflect"><div class="btns"><button class="btn-generate" type="button" data-act="quiz">${t('newQuiz')}</button></div></div>
+        </div>`;
+        return;
+    }
+    const item = qs[idx], q = item.q, answered = item.pick !== null, ok = item.pick === q.c;
+    $(k + '_speech').innerHTML = !answered ? t('quizMsg') : (ok ? t('quizGood') : t('quizBad'));
+    const opts = item.order.map(oi => {
+        let cls = 'opt';
+        if (answered) cls += oi === q.c ? ' correct' : (oi === item.pick ? ' wrong' : ' faded');
+        return `<button class="${cls}" type="button" data-act="opt" data-o="${oi}" ${answered ? 'disabled' : ''}>${L(q.opts[oi])}</button>`;
+    }).join('');
+    const explain = answered
+        ? `<div class="explain ${ok ? 'ok' : 'bad'}"><span class="verdict">${ok ? t('correct') : t('wrong') + ' ' + t('rightAnswer') + ' ' + L(q.opts[q.c])}</span>${L(q.ex)}</div>` : '';
+    c.innerHTML = `<div class="step-card${answered ? '' : ' animate__animated animate__fadeIn'}">
+        <h3>🌿 ${t('question')} ${idx + 1}</h3>
+        <div class="q-text">${L(q.q)}</div>
+        <div class="opts">${opts}</div>${explain}</div>`;
+}
+
+function maxPoints(it) { return it.type === 'list' ? 4 + it.places.length : it.concepts.length; }
+function testScore(k, i) {
+    const st = S[k].test;
+    return st.res[i] === 'checked' ? evaluate(TEST[i], st.ans[i]).score : 0;
+}
+function czGrade(p) { return p >= 0.9 ? 1 : p >= 0.75 ? 2 : p >= 0.5 ? 3 : p >= 0.3 ? 4 : 5; }
+
+function renderTest(k, isFinal) {
+    const st = S[k].test, idx = S[k].idx;
+    $(k + '_display').innerHTML = `<span class="label">${t('testDisplay')}:</span> <span class="target">${t('testDisplaySub')}</span>`;
+    const c = $(k + '_content');
+    if (isFinal) {
+        const scores = TEST.map((_, i) => testScore(k, i));
+        const sum = scores.reduce((a, b) => a + b, 0);
+        const pct = sum / TEST.length;
+        $(k + '_speech').innerHTML = t('testDoneMsg');
+        const weak = TEST.map((it, i) => ({ it, s: scores[i] })).filter(x => x.s < 0.75);
+        const rows = weak.map(({ it, s }) => {
+            const [tk, li] = it.lesson;
+            const ln = L(TAB[tk].lessons[li].name);
+            return `<button class="btn-secondary" type="button" data-act="gotoLesson" data-tab="${tk}" data-lesson="${li}">
+                <span class="q-num" style="height:1.6rem;min-width:1.6rem;font-size:.8rem">${it.num}</span>${L(it.q)}
+                <br><small>→ ${TAB[tk].icon} ${L(TAB[tk].name)}: ${ln}</small></button>`;
+        }).join('');
+        c.innerHTML = `<div class="result-card animate__animated animate__fadeInUp">
+            <div style="font-size:2rem;margin-bottom:.25rem;">${pct >= 0.75 ? '🦫🎉' : '🦫🌿'}</div>
+            <div class="sub">${t('spoken')}</div>
+            <div class="big">${t('testScore')}: ${fmtNum(sum)} / ${TEST.length}</div>
+            <div class="grade">${czGrade(pct)}</div>
+            <div class="sub">${t('grade')}</div>
+            ${weak.length ? `<div class="review"><div class="sub" style="margin:0">${t('review')}</div>${rows}</div>` : ''}
+            <div class="reflect"><div class="btns"><button class="btn-primary" type="button" data-act="retry">${t('retry')}</button></div></div>
+        </div>`;
+        return;
+    }
+    const it = TEST[idx], res = st.res[idx], ans = st.ans[idx];
+    let fb = '';
+    if (res) {
+        const ev = evaluate(it, ans);
+        const score = res === 'revealed' ? 0 : ev.score;
+        $(k + '_speech').innerHTML = res === 'revealed' ? t('fbRevealed') : score >= 0.99 ? t('fbGreat') : score >= 0.5 ? t('fbOk') : t('fbLow');
+        if (res === 'checked') {
+            fb += `<div><b>${t('found')}</b><ul class="checklist">` + ev.rows.map(r =>
+                `<li class="${r.ok ? 'ok' : 'no'}"><span class="mk">${r.ok ? '✓' : '○'}</span><span>${r.label}${r.small ? `<small>${esc(r.small)}</small>` : ''}</span></li>`).join('') + '</ul></div>';
+            fb += ev.hints.map(h => `<div class="hint">⚠️ ${esc(h)}</div>`).join('');
+            fb += `<div class="pts">${t('points')}: ${fmtNum(score * maxPoints(it))} / ${maxPoints(it)}</div>`;
+        }
+        fb += `<div class="model"><span class="ttl">${t('model')}</span>${L(it.model)}</div>`;
+        if (res === 'checked') fb += `<div class="auto-note">${t('autoNote')}</div>`;
+    } else {
+        $(k + '_speech').innerHTML = t('testMsg');
+    }
+    c.innerHTML = `<div class="step-card${res ? '' : ' animate__animated animate__fadeIn'}">
+        <h3><span class="q-num">${it.num}</span>${L(it.q)}</h3>
+        <textarea class="answer-box" id="test_ans_${idx}" data-q="${idx}" aria-label="${esc(L(it.q))}" placeholder="${esc(t('placeholder'))}">${esc(ans)}</textarea>
+        <div class="test-btns">
+            <button class="btn-primary" type="button" data-act="check">${t('check')}</button>
+            <button class="btn-secondary" type="button" data-act="reveal">${t('reveal')}</button>
+        </div>
+        <div class="feedback">${fb}</div>
+    </div>`;
+}
+
+function onAction(k, e) {
+    const b = e.target.closest('[data-act]');
+    if (!b) return;
+    const st = S[k];
+    switch (b.dataset.act) {
+        case 'opt': {
+            const item = st.quiz.qs[st.idx];
+            if (item.pick !== null) return;
+            item.pick = +b.dataset.o;
+            render(k);
+            break;
+        }
+        case 'quiz': startQuiz(k); break;
+        case 'again': startLesson(k, st.lesson); $(k + '_speech').innerHTML = t('retryMsg'); break;
+        case 'nextLesson': startLesson(k, st.lesson + 1); break;
+        case 'check': {
+            const ans = st.test.ans[st.idx] || '';
+            if (!ans.trim()) { $(k + '_speech').innerHTML = t('emptyAnswer'); return; }
+            st.test.res[st.idx] = 'checked';
+            render(k);
+            break;
+        }
+        case 'reveal': st.test.res[st.idx] = 'revealed'; render(k); break;
+        case 'retry':
+            st.test.ans = TEST.map(() => ''); st.test.res = TEST.map(() => null); st.idx = 0; st.mode = 'test';
+            render(k);
+            break;
+        case 'gotoLesson': {
+            const tk = b.dataset.tab;
+            switchTab(tk);
+            startLesson(tk, +b.dataset.lesson);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            break;
+        }
+    }
+}
+
+// ─── Initial render ─────────────────────────────────────────
+buildUI();
+applyStatic();
+TABS.forEach(tb => render(tb.key));
+switchTab(activeTab);
+</script>
+
+</body>
+</html>
